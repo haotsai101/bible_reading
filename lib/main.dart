@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../db/database_helper.dart';
 import '../models/bible_verse.dart';
 import 'widgets/custom_drawer_content.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() {
+void main() async {
   // Initialize sqflite for desktop or tests.
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
+  await dotenv.load(
+      fileName: ".env"); // Load environment variables from .env file
 
   runApp(const MyApp());
 }
