@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../models/bible.dart';
 
 class BibleService {
   Future<List<Bible>> fetchBibles() async {
+    final apiKey = dotenv.env['API_KEY']; // Access the API key
     final response = await http.get(
       Uri.parse('https://api.scripture.api.bible/v1/bibles'),
-      // Make sure to include your API key in the header
-      headers: {'api-key': 'YOUR_API_KEY_HERE'},
+      headers: {'api-key': apiKey!}, // Use the API key in the request header
     );
 
     if (response.statusCode == 200) {

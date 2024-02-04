@@ -58,6 +58,13 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+class BibleVersion {
+  final String name;
+  bool isSelected;
+
+  BibleVersion({required this.name, this.isSelected = false});
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final BibleVerse sampleVerse = BibleVerse(
     book: 'Genesis',
@@ -66,6 +73,13 @@ class _MyHomePageState extends State<MyHomePage> {
     text: 'In the beginning, God created the heavens and the earth.',
     version: 'test',
   );
+  List<BibleVersion> versions = [
+    BibleVersion(name: 'NIV'),
+    BibleVersion(name: 'KJV'),
+    BibleVersion(name: 'ESV'),
+  ];
+
+  String? selectedVersion = 'NIV'; // Default version
 
   @override
   Widget build(BuildContext context) {
@@ -82,18 +96,31 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
         actions: <Widget>[
+          PopupMenuButton<BibleVersion>(
+            onSelected: (BibleVersion version) {
+              setState(() {
+                version.isSelected = !version.isSelected;
+              });
+            },
+            itemBuilder: (BuildContext context) {
+              return versions.map((BibleVersion version) {
+                return CheckedPopupMenuItem<BibleVersion>(
+                  value: version,
+                  checked: version.isSelected,
+                  child: Text(version.name),
+                );
+              }).toList();
+            },
+            icon: const Icon(Icons.book), // Icon for the versions dropdown
+          ),
           PopupMenuButton<String>(
             onSelected: (String result) {
               // Handle the selection from the popup menu
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               const PopupMenuItem<String>(
-                value: 'Option 1',
-                child: Text('Option 1'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'Option 2',
-                child: Text('Option 2'),
+                value: 'download',
+                child: Text('Download'),
               ),
               // Add more options as needed
             ],
