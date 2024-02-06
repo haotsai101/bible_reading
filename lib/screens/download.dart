@@ -1,9 +1,7 @@
+// File: download_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
-import '../models/bible.dart'; // Assuming you have a Bible model
+import '../services/bible_service.dart';
+import '../models/bible.dart';
 
 class DownloadScreen extends StatefulWidget {
   const DownloadScreen({super.key});
@@ -15,24 +13,10 @@ class DownloadScreen extends StatefulWidget {
 class _DownloadScreenState extends State<DownloadScreen> {
   late Future<List<Bible>> futureBibles;
 
-  Future<List<Bible>> fetchBibles() async {
-    final response = await http.get(
-      Uri.parse('https://api.scripture.api.bible/v1/bibles'),
-      headers: {'api-key': dotenv.env['API_KEY']!},
-    );
-
-    if (response.statusCode == 200) {
-      List<dynamic> biblesJson = json.decode(response.body)['data'];
-      return biblesJson.map((json) => Bible.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load Bibles');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    futureBibles = fetchBibles();
+    futureBibles = BibleService().fetchBibles();
   }
 
   @override

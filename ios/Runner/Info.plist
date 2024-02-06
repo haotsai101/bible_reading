@@ -47,5 +47,24 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+	    <key>NSExceptionDomains</key>
+	    <dict>
+	        <key>api.scripture.api.bible</key>
+	        <dict>
+	            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+	            <false/>
+	            <key>NSIncludesSubdomains</key>
+	            <true/>
+	            <key>NSTemporaryExceptionMinimumTLSVersion</key>
+	            <string>TLSv1.2</string>
+	            <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
+	            <true/>
+	        </dict>
+	    </dict>
+	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We require access to your photo library to upload profile pictures.</string>
 </dict>
 </plist>

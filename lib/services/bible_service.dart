@@ -8,7 +8,7 @@ class BibleService {
     final apiKey = dotenv.env['API_KEY']; // Access the API key
     final response = await http.get(
       Uri.parse('https://api.scripture.api.bible/v1/bibles'),
-      headers: {'api-key': apiKey!}, // Use the API key in the request header
+      headers: {'api-key': apiKey!, 'Accept': 'application/json'},
     );
 
     if (response.statusCode == 200) {
