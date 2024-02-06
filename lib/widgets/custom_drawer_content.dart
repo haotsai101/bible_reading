@@ -25,25 +25,27 @@ class _CustomDrawerContentState extends State<CustomDrawerContent>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Tab 1'),
-            Tab(text: 'Tab 2'),
-          ],
-        ),
-        Expanded(
-          child: TabBarView(
+    return SafeArea(
+      child: Column(
+        children: <Widget>[
+          TabBar(
             controller: _tabController,
-            children: const [
-              Center(child: Text('Content for Tab 1')),
-              Center(child: Text('Content for Tab 2')),
+            tabs: const [
+              Tab(text: 'Tab 1'),
+              Tab(text: 'Tab 2'),
             ],
           ),
-        ),
-      ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                Center(child: Text('Content for Tab 1')),
+                Center(child: Text('Content for Tab 2')),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
