@@ -1,7 +1,7 @@
-// File: download_screen.dart
 import 'package:bible_reading/models/bible.dart';
+import 'package:bible_reading/models/book.dart';
+import 'package:bible_reading/services/bible_service.dart';
 import 'package:flutter/material.dart';
-import '../services/bible_service.dart';
 
 class DownloadScreen extends StatefulWidget {
   const DownloadScreen({Key? key}) : super(key: key);
@@ -12,11 +12,24 @@ class DownloadScreen extends StatefulWidget {
 
 class _DownloadScreenState extends State<DownloadScreen> {
   late Future<List<BibleGroup>> futureBibleGroups;
+  final BibleService bibleService = BibleService();
 
   @override
   void initState() {
     super.initState();
-    futureBibleGroups = BibleService().fetchBibles(); // Adjusted for BibleGroup
+    futureBibleGroups = bibleService.fetchBibles();
+  }
+
+  void _printBooks(String bibleId) async {
+    try {
+      List<Book> books = await bibleService.fetchBooks(bibleId);
+      // Here you can replace print with any other logic you'd like to apply to the books
+      for (var book in books) {
+        print('${book.name}: ${book.nameLong}');
+      }
+    } catch (e) {
+      print('Failed to load books: $e');
+    }
   }
 
   @override
@@ -32,7 +45,6 @@ class _DownloadScreenState extends State<DownloadScreen> {
             if (snapshot.hasError) {
               return Center(child: Text("Error: ${snapshot.error}"));
             }
-            // Build a list of ExpansionTiles for each language group
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -43,6 +55,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
                     return ListTile(
                       title: Text(bible.name),
                       subtitle: Text(bible.description),
+                      onTap: () =>
+                          _printBooks(bible.id), // Add onTap callback here
                     );
                   }).toList(),
                 );

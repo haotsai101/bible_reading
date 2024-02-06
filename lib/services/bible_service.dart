@@ -1,3 +1,5 @@
+import 'package:bible_reading/models/book.dart';
+import 'package:bible_reading/models/chapter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -28,6 +30,47 @@ class BibleService {
       return bibleGroups;
     } else {
       throw Exception('Failed to load Bibles');
+    }
+  }
+
+  Future<List<Book>> fetchBooks(String bibleId) async {
+    final apiKey = dotenv.env['API_KEY']; // Access the API key
+    final response = await http.get(
+      Uri.parse('https://api.scripture.api.bible/v1/bibles/$bibleId/books'),
+      headers: {'api-key': apiKey!, 'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> booksJson = data['data'];
+
+      // Convert the JSON books to a list of Book model objects
+      List<Book> books = booksJson.map((json) => Book.fromJson(json)).toList();
+      return books;
+    } else {
+      throw Exception('Failed to load books for Bible ID: $bibleId');
+    }
+  }
+
+  Future<List<Chapter>> fetchChapters(String bibleId, String bookId) async {
+    final apiKey = dotenv.env['API_KEY']; // Access the API key
+    final response = await http.get(
+      Uri.parse(
+          'https://api.scripture.api.bible/v1/bibles/$bibleId/books/$bookId/chapters'),
+      headers: {'api-key': apiKey!, 'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> chaptersJson = data['data'];
+
+      // Convert the JSON chapters to a list of Chapter model objects
+      List<Chapter> chapters =
+          chaptersJson.map((json) => Chapter.fromJson(json)).toList();
+      return chapters;
+    } else {
+      throw Exception(
+          'Failed to load chapters for Bible ID: $bibleId and Book ID: $bookId');
     }
   }
 
