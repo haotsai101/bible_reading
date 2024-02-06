@@ -1,22 +1,22 @@
 // File: download_screen.dart
+import 'package:bible_reading/models/bible.dart';
 import 'package:flutter/material.dart';
 import '../services/bible_service.dart';
-import '../models/bible.dart';
 
 class DownloadScreen extends StatefulWidget {
-  const DownloadScreen({super.key});
+  const DownloadScreen({Key? key}) : super(key: key);
 
   @override
   _DownloadScreenState createState() => _DownloadScreenState();
 }
 
 class _DownloadScreenState extends State<DownloadScreen> {
-  late Future<List<Bible>> futureBibles;
+  late Future<List<BibleGroup>> futureBibleGroups;
 
   @override
   void initState() {
     super.initState();
-    futureBibles = BibleService().fetchBibles();
+    futureBibleGroups = BibleService().fetchBibles(); // Adjusted for BibleGroup
   }
 
   @override
@@ -25,19 +25,26 @@ class _DownloadScreenState extends State<DownloadScreen> {
       appBar: AppBar(
         title: const Text('Download Bible Versions'),
       ),
-      body: FutureBuilder<List<Bible>>(
-        future: futureBibles,
+      body: FutureBuilder<List<BibleGroup>>(
+        future: futureBibleGroups,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(child: Text("Error: ${snapshot.error}"));
             }
+            // Build a list of ExpansionTiles for each language group
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data![index].name),
-                  subtitle: Text(snapshot.data![index].description),
+                final group = snapshot.data![index];
+                return ExpansionTile(
+                  title: Text(group.language),
+                  children: group.bibles.map((bible) {
+                    return ListTile(
+                      title: Text(bible.name),
+                      subtitle: Text(bible.description),
+                    );
+                  }).toList(),
                 );
               },
             );

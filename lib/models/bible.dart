@@ -23,3 +23,10 @@ class Bible {
     );
   }
 }
+
+class BibleGroup {
+  final String language;
+  final List<Bible> bibles;
+
+  BibleGroup({required this.language, required this.bibles});
+}
