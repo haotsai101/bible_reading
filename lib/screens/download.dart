@@ -1,5 +1,4 @@
 import 'package:bible_reading/models/bible.dart';
-import 'package:bible_reading/models/book.dart';
 import 'package:bible_reading/services/bible_service.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +6,7 @@ class DownloadScreen extends StatefulWidget {
   const DownloadScreen({Key? key}) : super(key: key);
 
   @override
-  _DownloadScreenState createState() => _DownloadScreenState();
+  State<DownloadScreen> createState() => _DownloadScreenState();
 }
 
 class _DownloadScreenState extends State<DownloadScreen> {
@@ -20,15 +19,39 @@ class _DownloadScreenState extends State<DownloadScreen> {
     futureBibleGroups = bibleService.fetchBibles();
   }
 
-  void _printBooks(String bibleId) async {
+  void _downloadBible(Bible bible) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // User must tap button to close the dialog
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text("Downloading..."),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
     try {
-      List<Book> books = await bibleService.fetchBooks(bibleId);
-      // Here you can replace print with any other logic you'd like to apply to the books
-      for (var book in books) {
-        print('${book.name}: ${book.nameLong}');
-      }
+      await bibleService
+          .downloadBible(bible); // Make sure this is the correct parameter
+      Navigator.pop(context); // Dismiss the loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Download completed for Bible ID: ${bible.id}')),
+      );
     } catch (e) {
-      print('Failed to load books: $e');
+      Navigator.pop(context); // Dismiss the loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to download Bible: $e')),
+      );
     }
   }
 
@@ -56,7 +79,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                       title: Text(bible.name),
                       subtitle: Text(bible.description),
                       onTap: () =>
-                          _printBooks(bible.id), // Add onTap callback here
+                          _downloadBible(bible), // Updated onTap callback
                     );
                   }).toList(),
                 );

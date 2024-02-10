@@ -1,5 +1,7 @@
+import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/book.dart';
 import 'package:bible_reading/models/chapter.dart';
+import 'package:bible_reading/models/verse.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -26,10 +28,11 @@ class BibleService {
       List<BibleGroup> bibleGroups = groupedByLanguage.entries.map((entry) {
         return BibleGroup(language: entry.key, bibles: entry.value);
       }).toList();
+      bibleGroups.sort((a, b) => a.language.compareTo(b.language));
 
       return bibleGroups;
     } else {
-      throw Exception('Failed to load Bibles');
+      throw Exception('Failed to load Bibles ${response.body}');
     }
   }
 
@@ -74,6 +77,27 @@ class BibleService {
     }
   }
 
+  Future<List<Verse>> fetchVerses(String bibleId, String chapterId) async {
+    final apiKey = dotenv.env['API_KEY']; // Access the API key
+    final response = await http.get(
+      Uri.parse(
+          'https://api.scripture.api.bible/v1/bibles/$bibleId/chapters/$chapterId?content-type=text'),
+      headers: {'api-key': apiKey!, 'Accept': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body)['data'];
+
+      // Convert the JSON data to a Verse model object
+      Verse verse = Verse.fromJson(data);
+      List<Verse> verses = parseVerses(verse, chapterId);
+      return verses;
+    } else {
+      throw Exception(
+          'Failed to load verses for Bible ID: $bibleId and Chapter ID: $chapterId');
+    }
+  }
+
   // Helper function to group Bibles by language
   Map<String, List<Bible>> groupBiblesByLanguage(List<Bible> bibles) {
     return bibles.fold(<String, List<Bible>>{},
@@ -82,5 +106,81 @@ class BibleService {
       map[bible.language]!.add(bible);
       return map;
     });
+  }
+
+  List<Verse> parseVerses(Verse parent, String chapterId) {
+    List<Verse> verses = [];
+    RegExp regExp = RegExp(r'\[\d+\]'); // Matches [Verse Number]
+
+    // Split the content by the regex, but also keep the delimiters
+    var parts = parent.content
+        .splitMapJoin(regExp,
+            onMatch: (m) => '${m.group(0)}',
+            onNonMatch: (n) => '\u{FFFF}$n\u{FFFF}')
+        .split('\u{FFFF}');
+
+    String currentVerseNumber = '';
+    for (var part in parts) {
+      if (regExp.hasMatch(part)) {
+        // Extract the verse number, removing brackets
+        currentVerseNumber = part.replaceAll(RegExp(r'[\[\]]'), '');
+      } else {
+        // Trim the verse text to remove any leading/trailing whitespace
+        String verseText = part.trim();
+        if (verseText.isNotEmpty) {
+          verses.add(Verse(
+              number: currentVerseNumber,
+              content: verseText,
+              chapterId: chapterId,
+              bibleId: parent.bibleId,
+              bookId: parent.bookId));
+        }
+      }
+    }
+
+    return verses;
+  }
+
+  Future<void> downloadBible(Bible bible) async {
+    String bibleId = bible.id;
+    try {
+      // Fetch Bible details and insert into the database
+      await DatabaseHelper.insertBible(bible);
+
+      // Fetch and insert books
+      final books = await fetchBooks(bibleId);
+
+      // Fetch chapters for each book concurrently
+      final chaptersFutures =
+          books.map((book) => fetchChapters(bibleId, book.id));
+      final chaptersList = await Future.wait(chaptersFutures);
+
+      List<List<Verse>> versesList = [];
+
+      for (var chapters in chaptersList) {
+        for (var chapter in chapters) {
+          await DatabaseHelper.insertChapter(chapter);
+        }
+        // Fetch and insert verses for each chapter concurrently
+        final versesFuture =
+            chapters.map((chapter) => fetchVerses(bibleId, chapter.id));
+        versesList.addAll(await Future.wait(versesFuture));
+      }
+      for (var book in books) {
+        await DatabaseHelper.insertBook(book);
+      }
+      for (var chapters in chaptersList) {
+        for (var chapter in chapters) {
+          await DatabaseHelper.insertChapter(chapter);
+        }
+      }
+      for (var verses in versesList) {
+        for (var verse in verses) {
+          await DatabaseHelper.insertVerse(verse);
+        }
+      }
+    } catch (e) {
+      throw ("Error downloading Bible: $e");
+    }
   }
 }

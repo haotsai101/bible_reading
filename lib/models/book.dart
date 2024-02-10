@@ -22,4 +22,24 @@ class Book {
       nameLong: json['nameLong'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'bibleId': bibleId,
+      'abbreviation': abbreviation,
+      'name': name,
+      'nameLong': nameLong,
+    };
+  }
+
+  factory Book.fromMap(Map<String, dynamic> map) {
+    return Book(
+      id: map['id'],
+      bibleId: map['bibleId'],
+      abbreviation: map['abbreviation'],
+      name: map['name'],
+      nameLong: map['nameLong'],
+    );
+  }
 }

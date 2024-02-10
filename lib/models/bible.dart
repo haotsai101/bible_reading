@@ -4,6 +4,7 @@ class Bible {
   final String description;
   final String abbreviation;
   final String language;
+  bool isSelected;
 
   Bible({
     required this.id,
@@ -11,6 +12,7 @@ class Bible {
     required this.description,
     required this.abbreviation,
     required this.language,
+    this.isSelected = true,
   });
 
   factory Bible.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,28 @@ class Bible {
       description: json['description'] ?? 'No description available',
       abbreviation: json['abbreviation'],
       language: json['language']['name'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'abbreviation': abbreviation,
+      'language': language,
+      'isSelected': isSelected ? 1 : 0
+    };
+  }
+
+  factory Bible.fromMap(Map<String, dynamic> map) {
+    return Bible(
+      id: map['id'],
+      name: map['name'],
+      description: map['description'],
+      abbreviation: map['abbreviation'],
+      language: map['language'],
+      isSelected: map['isSelected'] == 1,
     );
   }
 }

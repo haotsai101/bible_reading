@@ -22,4 +22,24 @@ class Chapter {
       reference: json['reference'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'bibleId': bibleId,
+      'bookId': bookId,
+      'number': number,
+      'reference': reference,
+    };
+  }
+
+  factory Chapter.fromMap(Map<String, dynamic> map) {
+    return Chapter(
+      id: map['id'],
+      bibleId: map['bibleId'],
+      bookId: map['bookId'],
+      number: map['number'],
+      reference: map['reference'],
+    );
+  }
 }

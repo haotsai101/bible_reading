@@ -4,7 +4,7 @@ class CustomDrawerContent extends StatefulWidget {
   const CustomDrawerContent({super.key});
 
   @override
-  _CustomDrawerContentState createState() => _CustomDrawerContentState();
+  State<CustomDrawerContent> createState() => _CustomDrawerContentState();
 }
 
 class _CustomDrawerContentState extends State<CustomDrawerContent>
