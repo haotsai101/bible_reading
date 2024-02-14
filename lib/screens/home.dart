@@ -127,8 +127,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 snapshot.data == null ||
                 snapshot.data!.isEmpty) {
               return const Center(
-                  child: Text(
-                      'No Bible version downloaded, please download one first.'));
+                  child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                    'No Bible downloaded/selected, please download/select one first.'),
+              ));
             }
             return ListView.builder(
               itemCount: snapshot.data!.length,
