@@ -25,6 +25,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
+    fetchData();
+  }
+
+  void fetchData() {
     futureVerses = ReadingManager().getVersesByChapter();
     futureVersions = ReadingManager().getBibles().then((bibles) {
       // Initialize the map of Bible IDs to Bible objects
@@ -37,13 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   {setState(() => title = '${b.name} ${c.number}')}
               })
         });
-  }
-
-  void updateVerses(Future<List<Verse>> newVerses, Book b, Chapter c) {
-    setState(() {
-      futureVerses = newVerses;
-      title = '${b.name} ${c.number}';
-    });
   }
 
   @override
@@ -76,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       await ReadingManager().addBibleId(version.id);
                     }
                     setState(() {
-                      futureVerses = ReadingManager().getVersesByChapter();
+                      fetchData();
                     });
                   },
                   itemBuilder: (BuildContext context) {
@@ -121,8 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       drawer: Drawer(
         child: CustomDrawerContent(
-          updateFutureVersesCallback:
-              updateVerses, // Pass the function directly
+          updateData: fetchData, // Pass the function directly
         ),
       ),
       body: FutureBuilder<List<Verse>>(

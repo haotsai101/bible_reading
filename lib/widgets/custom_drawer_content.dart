@@ -5,10 +5,9 @@ import 'package:bible_reading/services/reading_manager.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawerContent extends StatefulWidget {
-  final Function(Future<List<Verse>>, Book, Chapter) updateFutureVersesCallback;
+  final updateData;
 
-  const CustomDrawerContent(
-      {Key? key, required this.updateFutureVersesCallback})
+  const CustomDrawerContent({Key? key, required this.updateData})
       : super(key: key);
 
   @override
@@ -39,8 +38,7 @@ class _CustomDrawerContentState extends State<CustomDrawerContent> {
   void onChapterClicked(Book book, Chapter chapter) async {
     await ReadingManager().updateBookId(chapter.bookId);
     await ReadingManager().updateChapterId(chapter.id);
-    widget.updateFutureVersesCallback(ReadingManager().getVersesByChapter(),
-        book, chapter); // Call the callback passed from MyHomePage
+    widget.updateData(); // Call the callback passed from MyHomePage
     Navigator.pop(context);
   }
 
