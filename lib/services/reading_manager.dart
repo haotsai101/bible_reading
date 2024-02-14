@@ -81,7 +81,8 @@ class ReadingManager {
 
   // Method to get books for the current Bible
   Future<List<Book>> getBooks() async {
-    return await DatabaseHelper.getBooks(bibleIds.first);
+    return await DatabaseHelper.getBooks(
+        bibleIds.isNotEmpty ? bibleIds.first : '');
   }
 
   // Method to get chapters for the current book
