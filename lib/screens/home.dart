@@ -1,6 +1,4 @@
 import 'package:bible_reading/models/bible.dart';
-import 'package:bible_reading/models/book.dart';
-import 'package:bible_reading/models/chapter.dart';
 import 'package:bible_reading/models/verse.dart';
 import 'package:bible_reading/screens/download.dart';
 import 'package:bible_reading/services/reading_manager.dart';
