@@ -1,5 +1,7 @@
+import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
 import 'package:bible_reading/services/bible_service.dart';
+import 'package:bible_reading/services/reading_manager.dart';
 import 'package:flutter/material.dart';
 
 class DownloadScreen extends StatefulWidget {
@@ -12,11 +14,17 @@ class DownloadScreen extends StatefulWidget {
 class _DownloadScreenState extends State<DownloadScreen> {
   late Future<List<BibleGroup>> futureBibleGroups;
   final BibleService bibleService = BibleService();
+  Set<String> localBibleIds = {};
 
   @override
   void initState() {
     super.initState();
     futureBibleGroups = bibleService.fetchBibles();
+    DatabaseHelper.getBibles().then((localBibles) => {
+          setState((() {
+            localBibleIds = Set<String>.from(localBibles.map((e) => e.id));
+          }))
+        });
   }
 
   void _downloadBible(Bible bible) async {
@@ -47,6 +55,9 @@ class _DownloadScreenState extends State<DownloadScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Download completed for Bible ID: ${bible.id}')),
       );
+      ReadingManager().addBibleId(bible.id);
+      Navigator.pop(
+          context); // Go back to the home screen after download completion
     } catch (e) {
       Navigator.pop(context); // Dismiss the loading dialog
       ScaffoldMessenger.of(context).showSnackBar(
@@ -75,11 +86,20 @@ class _DownloadScreenState extends State<DownloadScreen> {
                 return ExpansionTile(
                   title: Text(group.language),
                   children: group.bibles.map((bible) {
+                    bool isDownloaded = localBibleIds.contains(bible.id);
                     return ListTile(
                       title: Text(bible.name),
                       subtitle: Text(bible.description),
-                      onTap: () =>
-                          _downloadBible(bible), // Updated onTap callback
+                      trailing: isDownloaded
+                          ? Icon(Icons.check, color: Colors.green)
+                          : null, // Add a check icon if downloaded
+                      onTap: isDownloaded
+                          ? null
+                          : () => _downloadBible(
+                              bible), // Disable onTap if downloaded
+                      tileColor: isDownloaded
+                          ? Colors.grey[200]
+                          : null, // Change color if downloaded
                     );
                   }).toList(),
                 );

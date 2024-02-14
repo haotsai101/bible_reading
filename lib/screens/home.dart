@@ -1,7 +1,9 @@
-import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
+import 'package:bible_reading/models/book.dart';
+import 'package:bible_reading/models/chapter.dart';
 import 'package:bible_reading/models/verse.dart';
 import 'package:bible_reading/screens/download.dart';
+import 'package:bible_reading/services/reading_manager.dart';
 import 'package:bible_reading/widgets/custom_drawer_content.dart';
 import 'package:flutter/material.dart';
 
@@ -15,23 +17,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<Verse>> futureVerses;
-  late Future<List<Bible>> futureVersions;
+  late Future<List<Verse>> futureVerses = Future.value([]);
+  late Future<List<Bible>> futureVersions = Future.value([]);
+  Map<String, Bible> biblesMap = {}; // Map to hold Bible ID to Bible object
+  String title = 'Bible';
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    // Assuming 'getVersesByChapter' accepts a list of bibleIds, a bookId, and a chapterId
-    futureVerses = DatabaseHelper.getVersesByChapter(
-        ['de4e12af7f28f599-02'], 'GEN', 'GEN.intro');
-    futureVersions = DatabaseHelper.getBibles();
+    futureVerses = ReadingManager().getVersesByChapter();
+    futureVersions = ReadingManager().getBibles().then((bibles) {
+      // Initialize the map of Bible IDs to Bible objects
+      biblesMap = {for (var bible in bibles) bible.id: bible};
+      return bibles;
+    });
+    ReadingManager().getChapter().then((c) => {
+          ReadingManager().getBook().then((b) => {
+                if (b != null && c != null)
+                  {setState(() => title = '${b.name} ${c.number}')}
+              })
+        });
+  }
+
+  void updateVerses(Future<List<Verse>> newVerses, Book b, Chapter c) {
+    setState(() {
+      futureVerses = newVerses;
+      title = '${b.name} ${c.number}';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Bible"),
+        title: Text(title),
         backgroundColor: Colors.blue,
         leading: Builder(
           builder: (BuildContext context) {
@@ -49,13 +68,24 @@ class _MyHomePageState extends State<MyHomePage> {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData) {
                 return PopupMenuButton<Bible>(
-                  onSelected: (Bible version) {
+                  onSelected: (Bible version) async {
                     // Handle the version selection
+                    if (ReadingManager().currentBibleIds.contains(version.id)) {
+                      await ReadingManager().removeBibleId(version.id);
+                    } else {
+                      await ReadingManager().addBibleId(version.id);
+                    }
+                    setState(() {
+                      futureVerses = ReadingManager().getVersesByChapter();
+                    });
                   },
                   itemBuilder: (BuildContext context) {
                     return snapshot.data!.map((Bible version) {
-                      return PopupMenuItem<Bible>(
+                      return CheckedPopupMenuItem<Bible>(
                         value: version,
+                        checked: ReadingManager()
+                            .currentBibleIds
+                            .contains(version.id),
                         child: Text(version.abbreviation),
                       );
                     }).toList();
@@ -89,8 +119,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      drawer: const Drawer(
-        child: CustomDrawerContent(),
+      drawer: Drawer(
+        child: CustomDrawerContent(
+          updateFutureVersesCallback:
+              updateVerses, // Pass the function directly
+        ),
       ),
       body: FutureBuilder<List<Verse>>(
         future: futureVerses,
@@ -108,9 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (context, index) {
                 Verse verse = snapshot.data![index];
                 return ListTile(
-                  title: Text(verse.content),
-                  subtitle: Text(
-                      'Bible ID: ${verse.bibleId}, Verse: ${verse.number}'),
+                  title: Text('${verse.number} ${verse.content}'),
+                  subtitle: biblesMap.length > 1
+                      ? Text(
+                          'Bible: ${biblesMap[verse.bibleId]?.abbreviation ?? 'Unknown'}')
+                      : null, // Conditional display based on the number of items in biblesMap
                 );
               },
             );

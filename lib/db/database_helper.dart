@@ -109,4 +109,46 @@ class DatabaseHelper {
     );
     return List.generate(maps.length, (i) => Verse.fromMap(maps[i]));
   }
+
+  // Method to get a specific chapter by chapterId
+  static Future<Chapter?> getChapter(String chapterId) async {
+    final db =
+        await getDatabase(); // Assuming getDatabase() provides a singleton instance of the database
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Chapters',
+      where: 'id = ?',
+      whereArgs: [chapterId],
+      limit: 1, // Expecting only one match for a unique chapterId
+    );
+
+    if (maps.isNotEmpty) {
+      // If there's a match, return a Chapter object
+      return Chapter.fromMap(maps
+          .first); // Assuming you have a fromMap factory constructor in your Chapter model
+    } else {
+      // If no match is found, return null
+      return null;
+    }
+  }
+
+  // Method to get a specific book by bookId
+  static Future<Book?> getBook(String bookId) async {
+    final db =
+        await getDatabase(); // Assuming getDatabase() provides a singleton instance of the database
+    final List<Map<String, dynamic>> maps = await db.query(
+      'Books',
+      where: 'id = ?',
+      whereArgs: [bookId],
+      limit: 1, // Expecting only one match for a unique chapterId
+    );
+
+    if (maps.isNotEmpty) {
+      // If there's a match, return a Chapter object
+      return Book.fromMap(maps
+          .first); // Assuming you have a fromMap factory constructor in your Chapter model
+    } else {
+      // If no match is found, return null
+      return null;
+    }
+  }
 }

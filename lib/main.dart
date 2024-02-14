@@ -1,4 +1,5 @@
 import 'package:bible_reading/screens/home.dart';
+import 'package:bible_reading/services/reading_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -8,6 +9,8 @@ void main() async {
   sqfliteFfiInit();
   await dotenv.load(
       fileName: ".env"); // Load environment variables from .env file
+  var readingManager = ReadingManager();
+  await readingManager.initialize();
 
   runApp(const MyApp());
 }
