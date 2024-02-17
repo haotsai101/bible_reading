@@ -15,16 +15,16 @@ class CustomDrawerContent extends StatefulWidget {
 
 class _CustomDrawerContentState extends State<CustomDrawerContent> {
   List<Book> books = [];
-  Map<String, List<Chapter>> booksMap =
+  Map<String, Future<List<Chapter>>> booksMap =
       {}; // Map to hold Bible ID to Bible object
 
   @override
   initState() {
     super.initState();
-    ReadingManager().getBooks().then((b) async {
-      Map<String, List<Chapter>> tempBooksMap = {};
+    ReadingManager().getBooks().then((b) {
+      Map<String, Future<List<Chapter>>> tempBooksMap = {};
       for (var book in b) {
-        var chapters = await ReadingManager().getChapters(book.id);
+        var chapters = ReadingManager().getChapters(book.id);
         tempBooksMap[book.id] = chapters;
       }
       setState(() {
@@ -48,31 +48,47 @@ class _CustomDrawerContentState extends State<CustomDrawerContent> {
         itemCount: books.length,
         itemBuilder: (context, index) {
           Book book = books[index];
-          List<Chapter> chapters = booksMap[book.id] ??
-              []; // Get chapters for the book, defaulting to an empty list if not found
 
           return ExpansionTile(
             title: Text(book.name),
             children: <Widget>[
-              SizedBox(
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5,
-                  ),
-                  itemCount: chapters.length,
-                  itemBuilder: (context, gridIndex) {
-                    Chapter chapter = chapters[gridIndex];
-                    return GridTile(
-                      child: TextButton(
-                        onPressed: () => onChapterClicked(book,
-                            chapter), // Define this function to handle chapter clicks
-                        child: Text(chapter.number),
+              FutureBuilder<List<Chapter>>(
+                future: booksMap[
+                    book.id], // The future containing the list of chapters
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    List<Chapter> chapters = snapshot.data ?? [];
+
+                    return SizedBox(
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                        ),
+                        itemCount: chapters.length,
+                        itemBuilder: (context, gridIndex) {
+                          Chapter chapter = chapters[gridIndex];
+                          return GridTile(
+                            child: TextButton(
+                              onPressed: () => onChapterClicked(book, chapter),
+                              child: Text(chapter.number),
+                            ),
+                          );
+                        },
                       ),
                     );
-                  },
-                ),
+                  } else {
+                    // Show a loading indicator or placeholder while waiting for chapters to load
+                    return const SizedBox(
+                      height: 50, // Adjust the height as needed
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           );

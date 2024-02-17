@@ -144,9 +144,6 @@ class BibleService {
   Future<void> downloadBible(Bible bible) async {
     String bibleId = bible.id;
     try {
-      // Fetch Bible details and insert into the database
-      await DatabaseHelper.insertBible(bible);
-
       // Fetch and insert books
       final books = await fetchBooks(bibleId);
 
@@ -158,27 +155,16 @@ class BibleService {
       List<List<Verse>> versesList = [];
 
       for (var chapters in chaptersList) {
-        for (var chapter in chapters) {
-          await DatabaseHelper.insertChapter(chapter);
-        }
         // Fetch and insert verses for each chapter concurrently
         final versesFuture =
             chapters.map((chapter) => fetchVerses(bibleId, chapter.id));
         versesList.addAll(await Future.wait(versesFuture));
       }
-      for (var book in books) {
-        await DatabaseHelper.insertBook(book);
-      }
-      for (var chapters in chaptersList) {
-        for (var chapter in chapters) {
-          await DatabaseHelper.insertChapter(chapter);
-        }
-      }
-      for (var verses in versesList) {
-        for (var verse in verses) {
-          await DatabaseHelper.insertVerse(verse);
-        }
-      }
+
+      List<Chapter> chapters = chaptersList.expand((list) => list).toList();
+      List<Verse> verses = versesList.expand((list) => list).toList();
+
+      await DatabaseHelper.batchCreateBible(bible, books, chapters, verses);
     } catch (e) {
       throw ("Error downloading Bible: $e");
     }

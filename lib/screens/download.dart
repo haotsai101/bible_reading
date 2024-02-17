@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
 import 'package:bible_reading/services/bible_service.dart';
+import 'package:bible_reading/services/file_parsing_service.dart';
 import 'package:bible_reading/services/reading_manager.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class DownloadScreen extends StatefulWidget {
@@ -66,6 +70,24 @@ class _DownloadScreenState extends State<DownloadScreen> {
     }
   }
 
+  Future<void> _pickAndProcessFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      try {
+        File file = File(result.files.single.path!);
+        Bible bible = await parseAndSaveVerses(file.path);
+        ReadingManager().addBibleId(bible.id);
+        Navigator.pop(
+            context); // Go back to the home screen after download completion
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to parse Bible: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,6 +131,11 @@ class _DownloadScreenState extends State<DownloadScreen> {
             return const Center(child: CircularProgressIndicator());
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _pickAndProcessFile,
+        tooltip: 'Add Bible Text File',
+        child: const Icon(Icons.add),
       ),
     );
   }

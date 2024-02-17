@@ -1,3 +1,4 @@
+import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
 import 'package:bible_reading/models/verse.dart';
 import 'package:bible_reading/screens/download.dart';
@@ -14,7 +15,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   late Future<List<Verse>> futureVerses = Future.value([]);
   late Future<List<Bible>> futureVersions = Future.value([]);
   Map<String, Bible> biblesMap = {}; // Map to hold Bible ID to Bible object
@@ -26,6 +27,20 @@ class _MyHomePageState extends State<MyHomePage> {
     fetchData();
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      fetchData(); // Refresh data when the app is brought to the foreground
+    }
+  }
+
   void fetchData() {
     futureVerses = ReadingManager().getVersesByChapter();
     futureVersions = ReadingManager().getBibles().then((bibles) {
@@ -35,10 +50,49 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     ReadingManager().getChapter().then((c) => {
           ReadingManager().getBook().then((b) => {
-                if (b != null && c != null)
-                  {setState(() => title = '${b.name} ${c.number}')}
+                if (b != null &&
+                    c != null &&
+                    ReadingManager().currentBibleIds.isNotEmpty)
+                  {setState(() => title = '${b.abbreviation} ${c.number}')}
+                else if (ReadingManager().currentBibleIds.isEmpty)
+                  {setState(() => title = 'Bible')}
               })
         });
+  }
+
+  void showDatabaseRecordsCount(BuildContext context) async {
+    int bibleCount = await DatabaseHelper.countBibles();
+    int bookCount = await DatabaseHelper.countBooks();
+    int chapterCount = await DatabaseHelper.countChapters();
+    int verseCount = await DatabaseHelper.countVerses();
+
+    // ignore: use_build_context_synchronously
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Database Records Count'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Bibles: $bibleCount'),
+                Text('Books: $bookCount'),
+                Text('Chapters: $chapterCount'),
+                Text('Verses: $verseCount'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -151,11 +205,10 @@ class _MyHomePageState extends State<MyHomePage> {
           }
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => DatabaseHelper.insertVerse(
-      //       sampleVerse), // Await the async operation
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDatabaseRecordsCount(context),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

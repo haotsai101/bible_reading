@@ -64,7 +64,9 @@
 	        </dict>
 	    </dict>
 	</dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We require access to your photo library to upload profile pictures.</string>
-</dict>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Explain why your app needs access to the documents folder</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>Explain why your app needs access to the downloads folder</string>
+	</dict>
 </plist>

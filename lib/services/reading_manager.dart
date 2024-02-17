@@ -81,8 +81,7 @@ class ReadingManager {
 
   // Method to get books for the current Bible
   Future<List<Book>> getBooks() async {
-    return await DatabaseHelper.getBooks(
-        bibleIds.isNotEmpty ? bibleIds.first : '');
+    return await DatabaseHelper.getBooks();
   }
 
   // Method to get chapters for the current book
@@ -92,17 +91,14 @@ class ReadingManager {
 
   // Method to get the current chapter
   Future<Chapter?> getChapter() async {
-    return await DatabaseHelper.getChapter(chapterId);
+    return await DatabaseHelper.getChapter(
+        chapterId, bibleIds.isNotEmpty ? bibleIds.first : null);
   }
 
   // Method to get the current chapter
   Future<Book?> getBook() async {
-    return await DatabaseHelper.getBook(bookId);
-  }
-
-  // Method to get verses for the current chapter
-  Future<List<Verse>> getVerses(String chapterId) async {
-    return await DatabaseHelper.getVerses(chapterId);
+    return await DatabaseHelper.getBook(
+        bookId, bibleIds.isNotEmpty ? bibleIds.first : null);
   }
 
   // Method to get verses by chapter considering multiple Bible IDs
