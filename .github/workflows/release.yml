@@ -6,12 +6,12 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      flutter-version: "2.19.2"
+      flutter-version: "3.0.0"
 
     steps:
       - name: Setup Flutter version
         id: flutter_version
-        run: echo "flutter-version=2.19.2" >> $GITHUB_ENV
+        run: echo "flutter-version=3.0.0" >> $GITHUB_ENV
 
   build-android:
     needs: setup
