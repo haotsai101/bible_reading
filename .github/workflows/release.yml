@@ -6,12 +6,12 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      flutter-version: "2.10.0"
+      flutter-version: "2.19.2"
 
     steps:
       - name: Setup Flutter version
         id: flutter_version
-        run: echo "::set-output name=flutter-version::2.10.0"
+        run: echo "my_output=some value" >> $GITHUB_OUTPUT
 
   build-android:
     needs: setup
