@@ -170,10 +170,10 @@ class DatabaseHelper {
     final db = await getDatabase();
     final List<Map<String, dynamic>> maps = await db.query(
       'Bibles',
-      // where: 'id != ?', // Add a WHERE clause to exclude the default Bible ID
-      // whereArgs: [
-      //   defaultBibleId
-      // ], // Provide the default Bible ID as a parameter
+      where: 'id != ?', // Add a WHERE clause to exclude the default Bible ID
+      whereArgs: [
+        defaultBibleId
+      ], // Provide the default Bible ID as a parameter
     );
     return List.generate(maps.length, (i) => Bible.fromMap(maps[i]));
   }

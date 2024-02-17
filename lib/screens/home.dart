@@ -60,41 +60,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
         });
   }
 
-  void showDatabaseRecordsCount(BuildContext context) async {
-    int bibleCount = await DatabaseHelper.countBibles();
-    int bookCount = await DatabaseHelper.countBooks();
-    int chapterCount = await DatabaseHelper.countChapters();
-    int verseCount = await DatabaseHelper.countVerses();
-
-    // ignore: use_build_context_synchronously
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Database Records Count'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Bibles: $bibleCount'),
-                Text('Books: $bookCount'),
-                Text('Chapters: $chapterCount'),
-                Text('Verses: $verseCount'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,10 +169,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
             return const Center(child: CircularProgressIndicator());
           }
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDatabaseRecordsCount(context),
-        child: const Icon(Icons.add),
       ),
     );
   }
