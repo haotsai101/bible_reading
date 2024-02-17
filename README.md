@@ -18,7 +18,7 @@ To install the Bible Reading App, follow these simple steps:
 
 1. Clone the repository to your local machine:
    \`\`\`sh
-   git clone https://github.com/your-username/bible-reading-app.git
+   git clone https://github.com/haotsai101/bible_reading.git
    \`\`\`
 
 2. Navigate to the project directory:
