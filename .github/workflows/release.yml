@@ -25,11 +25,14 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      - name: List APK directory
+        run: ls -R ./build/app/outputs/flutter-apk/
+
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: ./build/app/outputs/flutter-apk/app-release.apk
 
   build-ios:
     runs-on: macos-latest
