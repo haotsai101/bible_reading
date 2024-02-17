@@ -1,9 +1,6 @@
 name: Release Workflow
 
-on:
-  push:
-    tags:
-      - "v*"
+on: push
 
 jobs:
   setup:
