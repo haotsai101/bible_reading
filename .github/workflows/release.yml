@@ -9,6 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Create .env file
+        run: |
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "ANOTHER_SECRET=${{ secrets.ANOTHER_SECRET }}" >> .env
+        shell: bash
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -31,6 +37,12 @@ jobs:
     environment: Prod
     steps:
       - uses: actions/checkout@v3
+
+      - name: Create .env file
+        run: |
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "ANOTHER_SECRET=${{ secrets.ANOTHER_SECRET }}" >> .env
+        shell: bash
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
