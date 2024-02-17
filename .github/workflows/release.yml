@@ -5,26 +5,18 @@ on: push
 jobs:
   setup:
     runs-on: ubuntu-latest
-    outputs:
-      flutter-version: "3.0.0"
-
-    steps:
-      - name: Setup Flutter version
-        id: flutter_version
-        run: echo "flutter-version=3.0.0" >> $GITHUB_ENV
 
   build-android:
     needs: setup
     runs-on: ubuntu-latest
     environment: Prod
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ needs.setup.outputs.flutter-version }}
-          channel: "stable"
+          channel: "master"
 
       - name: Get Flutter dependencies
         run: flutter pub get
@@ -43,13 +35,12 @@ jobs:
     runs-on: macos-latest
     environment: Prod
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ needs.setup.outputs.flutter-version }}
-          channel: "stable"
+          channel: "master"
 
       - name: Get Flutter dependencies
         run: flutter pub get
