@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
 
   build-android:
-    needs: setup
     runs-on: ubuntu-latest
     environment: Prod
     steps:
@@ -31,7 +30,6 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   build-ios:
-    needs: setup
     runs-on: macos-latest
     environment: Prod
     steps:
