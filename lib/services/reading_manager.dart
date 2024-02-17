@@ -27,7 +27,19 @@ class ReadingManager {
   // Method to initialize from SharedPreferences, this can be called from your main.dart or initState of your first screen
   Future<void> initialize() async {
     final prefs = await SharedPreferences.getInstance();
-    bibleIds = Set<String>.from(prefs.getStringList(_bibleIdsKey) ?? []);
+    Set<String> bibleIds =
+        Set<String>.from(prefs.getStringList(_bibleIdsKey) ?? []);
+    List<Bible> bibles = await DatabaseHelper.getBibles();
+
+// Create a set of all Bible IDs from the database for efficient lookup
+    Set<String> validBibleIds = bibles.map((bible) => bible.id).toSet();
+
+// Remove any IDs from bibleIds that don't exist in validBibleIds
+    bibleIds.removeWhere((id) => !validBibleIds.contains(id));
+
+// Optionally, update the preferences with the cleaned set of Bible IDs
+    await prefs.setStringList(_bibleIdsKey, bibleIds.toList());
+
     bookId = prefs.getString(_bookIdKey) ?? 'GEN';
     chapterId = prefs.getString(_chapterIdKey) ?? 'GEN.1';
     // Here you can notify listeners or update UI as needed
