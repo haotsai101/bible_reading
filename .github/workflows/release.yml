@@ -41,7 +41,6 @@ jobs:
       - name: Create .env file
         run: |
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
-          echo "ANOTHER_SECRET=${{ secrets.ANOTHER_SECRET }}" >> .env
         shell: bash
 
       - name: Setup Flutter
