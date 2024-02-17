@@ -1,4 +1,3 @@
-import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
 import 'package:bible_reading/models/verse.dart';
 import 'package:bible_reading/screens/download.dart';
