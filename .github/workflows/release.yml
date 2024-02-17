@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Setup Flutter version
         id: flutter_version
-        run: echo "my_output=some value" >> $GITHUB_OUTPUT
+        run: echo "flutter-version=2.19.2" >> $GITHUB_ENV
 
   build-android:
     needs: setup
