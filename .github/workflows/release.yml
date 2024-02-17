@@ -18,7 +18,7 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release --verbose
+        run: flutter build apk --release
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
@@ -44,7 +44,7 @@ jobs:
         run: cd ios && pod install
 
       - name: Build iOS App (Archive)
-        run: flutter build ios --release --no-codesign --verbose
+        run: flutter build ios --release --no-codesign
 
       - name: Zip build artifacts
         run: cd build/ios/iphoneos && zip -r ../../ios-app.zip ./*
