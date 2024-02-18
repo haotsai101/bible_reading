@@ -8,74 +8,50 @@ jobs:
     environment: Prod
     steps:
       - uses: actions/checkout@v3
-
       - name: Create .env file
         run: |
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
         shell: bash
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-
       - name: Get Flutter dependencies
         run: flutter pub get
-
       - name: Build APK
         run: flutter build apk --release
-
-      - name: Display pwd
-        run: pwd
-
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: app-release.apk
-          path: ./build/android/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
   build-ios:
     runs-on: macos-latest
     environment: Prod
     steps:
       - uses: actions/checkout@v3
-
       - name: Create .env file
         run: |
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
         shell: bash
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-
       - name: Get Flutter dependencies
         run: flutter pub get
-
       - name: Install CocoaPods dependencies
         run: cd ios && pod install
-
       - name: Build iOS App (Archive)
         run: flutter build ios --release --no-codesign
-
       - name: Zip build artifacts
         run: cd build/ios/iphoneos && zip -r ../../ios-app.zip ./*
-
-      - name: Display pwd
-        run: pwd
-
-      - name: List root directory
-        run: ls -R ./
-
-      - name: List build directory
-        run: ls -R ./build/
-
       - name: Upload iOS build to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: ios-app.zip
-          path: ./build/ios/ios-app.zip
+          path: build/ios-app.zip
 
   create-release:
     needs: [build-android, build-ios]
@@ -83,6 +59,17 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v3
+      - name: Download APK Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-release.apk
+          path: build/android/
+      - name: Download iOS Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ios-app.zip
+          path: build/ios/
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -93,38 +80,21 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-
-      - name: Display pwd
-        run: pwd
-
-      - name: List root directory
-        run: ls -R ./
-
-      - name: List build directory
-        run: ls -R ./build/
-
-      - name: List android directory
-        run: ls -R ./build/android/
-
       - name: Upload APK Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/android/app-release.apk
+          asset_path: build/android/app-release.apk
           asset_name: app-release.apk
           asset_content_type: application/vnd.android.package-archive
-
-      - name: List ios directory
-        run: ls -R ./build/ios/
-
       - name: Upload iOS Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/ios/ios-app.zip
+          asset_path: build/ios/ios-app.zip
           asset_name: ios-app.zip
           asset_content_type: application/zip
