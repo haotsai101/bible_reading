@@ -25,9 +25,6 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      - name: List APK directory
-        run: ls -R ./build/app/outputs/flutter-apk/
-
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -85,6 +82,9 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: List android directory
+        run: ls -R ./build/android/
+
       - name: Upload APK Release Asset
         uses: actions/upload-release-asset@v1
         env:
@@ -94,6 +94,9 @@ jobs:
           asset_path: ./build/android/app-release.apk
           asset_name: app-release.apk
           asset_content_type: application/vnd.android.package-archive
+
+      - name: List ios directory
+        run: ls -R ./build/ios/
 
       - name: Upload iOS Release Asset
         uses: actions/upload-release-asset@v1
