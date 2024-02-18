@@ -9,7 +9,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class DownloadScreen extends StatefulWidget {
-  const DownloadScreen({Key? key}) : super(key: key);
+  final updateData;
+
+  const DownloadScreen({Key? key, required this.updateData}) : super(key: key);
 
   @override
   State<DownloadScreen> createState() => _DownloadScreenState();
@@ -59,7 +61,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Download completed for Bible ID: ${bible.id}')),
       );
-      ReadingManager().addBibleId(bible.id);
+      await ReadingManager().addBibleId(bible.id);
+      widget.updateData();
       Navigator.pop(
           context); // Go back to the home screen after download completion
     } catch (e) {
@@ -77,7 +80,8 @@ class _DownloadScreenState extends State<DownloadScreen> {
       try {
         File file = File(result.files.single.path!);
         Bible bible = await parseAndSaveVerses(file.path);
-        ReadingManager().addBibleId(bible.id);
+        await ReadingManager().addBibleId(bible.id);
+        widget.updateData();
         Navigator.pop(
             context); // Go back to the home screen after download completion
       } catch (e) {
