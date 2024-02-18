@@ -117,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DownloadScreen()),
+                      builder: (context) =>
+                          DownloadScreen(updateData: fetchData)),
                 );
               }
             },
