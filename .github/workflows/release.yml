@@ -25,6 +25,9 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
+      - name: Display pwd
+        run: pwd
+
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -59,6 +62,15 @@ jobs:
       - name: Zip build artifacts
         run: cd build/ios/iphoneos && zip -r ../../ios-app.zip ./*
 
+      - name: Display pwd
+        run: pwd
+
+      - name: List root directory
+        run: ls -R ./
+
+      - name: List build directory
+        run: ls -R ./build/
+
       - name: Upload iOS build to Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -81,6 +93,15 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
+
+      - name: Display pwd
+        run: pwd
+
+      - name: List root directory
+        run: ls -R ./
+
+      - name: List build directory
+        run: ls -R ./build/
 
       - name: List android directory
         run: ls -R ./build/android/
