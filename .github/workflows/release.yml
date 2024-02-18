@@ -46,15 +46,6 @@ jobs:
       - name: Build iOS IPA
         run: flutter build ipa --release --no-codesign
 
-      - name: Display pwd
-        run: pwd
-
-      - name: List root directory
-        run: ls -R ./
-
-      - name: List build directory
-        run: ls -R ./build/
-
       - name: Zip IPA build artifacts
         run: cd build/ios && zip -r ../ios-ipa.zip ./*
       - name: Upload iOS IPA to Artifacts
