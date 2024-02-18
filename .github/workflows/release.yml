@@ -56,7 +56,7 @@ jobs:
         run: ls -R ./build/
 
       - name: Zip IPA build artifacts
-        run: cd build/ios/ipa && zip -r ../../../ios-ipa.zip ./*
+        run: cd build/ios/iphoneos && zip -r ../../ios-ipa.zip ./*
       - name: Upload iOS IPA to Artifacts
         uses: actions/upload-artifact@v2
         with:
