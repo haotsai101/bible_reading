@@ -41,32 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-	    <key>NSExceptionDomains</key>
-	    <dict>
-	        <key>api.scripture.api.bible</key>
-	        <dict>
-	            <key>NSExceptionAllowsInsecureHTTPLoads</key>
-	            <false/>
-	            <key>NSIncludesSubdomains</key>
-	            <true/>
-	            <key>NSTemporaryExceptionMinimumTLSVersion</key>
-	            <string>TLSv1.2</string>
-	            <key>NSTemporaryExceptionRequiresForwardSecrecy</key>
-	            <true/>
-	        </dict>
-	    </dict>
-	</dict>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Explain why your app needs access to the documents folder</string>
-	<key>NSDownloadsFolderUsageDescription</key>
-	<string>Explain why your app needs access to the downloads folder</string>
-	</dict>
+</dict>
 </plist>
