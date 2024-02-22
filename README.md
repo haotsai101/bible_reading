@@ -2,6 +2,9 @@
 
 The Bible Reading App is a comprehensive mobile application designed for users to read, download, and manage various versions of the Bible. It offers a user-friendly interface to access Bible verses, chapters, and books efficiently, with support for multiple Bible translations. The app includes features such as bookmarking, note-taking, and highlighting verses, making it an ideal tool for personal study, devotion, and reference.
 
+https://github.com/haotsai101/bible_reading/assets/55200415/c3f884a4-3ff1-4914-b484-439dafab4d02
+
+
 ## Features
 
 - **Multiple Bible Versions**: Access to a variety of Bible translations, allowing users to read and compare different versions.
