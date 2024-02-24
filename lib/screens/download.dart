@@ -7,6 +7,7 @@ import 'package:bible_reading/services/file_parsing_service.dart';
 import 'package:bible_reading/services/reading_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class DownloadScreen extends StatefulWidget {
   final updateData;
@@ -31,6 +32,11 @@ class _DownloadScreenState extends State<DownloadScreen> {
             localBibles = bibles;
           }))
         });
+    _requestPermission();
+  }
+
+  Future<void> _requestPermission() async {
+    await Permission.storage.request();
   }
 
   void _downloadBible(Bible bible) async {
