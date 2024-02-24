@@ -36,7 +36,10 @@ class _DownloadScreenState extends State<DownloadScreen> {
   }
 
   Future<void> _requestPermission() async {
-    await Permission.storage.request();
+    var status = await Permission.storage.request();
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
   }
 
   void _downloadBible(Bible bible) async {
