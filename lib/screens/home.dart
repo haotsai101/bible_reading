@@ -23,10 +23,10 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   initState() {
     super.initState();
-    fetchData();
+    _fetchData();
   }
 
-  void fetchData() {
+  void _fetchData() {
     futureVerses = ReadingManager().getVersesByChapter();
     futureVersions = ReadingManager().getBibles().then((bibles) {
       // Initialize the map of Bible IDs to Bible objects
@@ -43,6 +43,17 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   {setState(() => title = 'Bible')}
               })
         });
+  }
+
+  Future<void> _handleRefresh() async {
+    setState(() {
+      futureVerses = ReadingManager().getVersesByChapter();
+      futureVersions = ReadingManager().getBibles().then((bibles) {
+        // Initialize the map of Bible IDs to Bible objects
+        biblesMap = {for (var bible in bibles) bible.id: bible};
+        return bibles;
+      });
+    });
   }
 
   @override
@@ -75,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       await ReadingManager().addBibleId(version.id);
                     }
                     setState(() {
-                      fetchData();
+                      _fetchData();
                     });
                   },
                   itemBuilder: (BuildContext context) {
@@ -104,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          DownloadScreen(updateData: fetchData)),
+                          DownloadScreen(updateData: _fetchData)),
                 );
               }
             },
@@ -121,40 +132,59 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       ),
       drawer: Drawer(
         child: CustomDrawerContent(
-          updateData: fetchData, // Pass the function directly
+          updateData: _fetchData, // Pass the function directly
         ),
       ),
-      body: FutureBuilder<List<Verse>>(
-        future: futureVerses,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError ||
-                snapshot.data == null ||
-                snapshot.data!.isEmpty) {
-              return const Center(
-                  child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                    'No Bible downloaded/selected, please download/select one first.'),
-              ));
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: GestureDetector(
+          onHorizontalDragEnd: (DragEndDetails details) async {
+            // Determine swipe direction
+            if (details.primaryVelocity! > 0) {
+              // User swiped Right - Load previous chapter
+              // Here, you need to implement logic to determine the previous chapter ID
+              await ReadingManager().goToPreviousChapter();
+              _fetchData();
+            } else if (details.primaryVelocity! < 0) {
+              // User swiped Left - Load next chapter
+              // Here, you need to implement logic to determine the next chapter ID
+              await ReadingManager().goToNextChapter();
+              _fetchData();
             }
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                Verse verse = snapshot.data![index];
-                return ListTile(
-                  title: Text('${verse.number} ${verse.content}'),
-                  subtitle: biblesMap.length > 1
-                      ? Text(
-                          'Bible: ${biblesMap[verse.bibleId]?.abbreviation ?? 'Unknown'}')
-                      : null, // Conditional display based on the number of items in biblesMap
+          },
+          child: FutureBuilder<List<Verse>>(
+            future: futureVerses,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError ||
+                    snapshot.data == null ||
+                    snapshot.data!.isEmpty) {
+                  return const Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text(
+                        'No Bible downloaded/selected, please download/select one first.'),
+                  ));
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    Verse verse = snapshot.data![index];
+                    return ListTile(
+                      title: Text('${verse.number} ${verse.content}'),
+                      subtitle: biblesMap.length > 1
+                          ? Text(
+                              'Bible: ${biblesMap[verse.bibleId]?.abbreviation ?? 'Unknown'}')
+                          : null, // Conditional display based on the number of items in biblesMap
+                    );
+                  },
                 );
-              },
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
+        ),
       ),
     );
   }

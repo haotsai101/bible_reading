@@ -112,4 +112,56 @@ class ReadingManager {
     return await DatabaseHelper.getVersesByChapter(
         bibleIds.toList(), bookId, chapterId);
   }
+
+  Future<void> goToNextChapter() async {
+    final chapters = await DatabaseHelper.getChapters(bookId);
+    if (chapters.isNotEmpty) {
+      final currentIndex =
+          chapters.indexWhere((chapter) => chapter.id == chapterId);
+      if (currentIndex != -1 && currentIndex < chapters.length - 1) {
+        // Go to the next chapter in the current book
+        final nextChapter = chapters[currentIndex + 1];
+        await updateChapterId(nextChapter.id);
+      } else if (currentIndex == chapters.length - 1) {
+        // If at the last chapter of the current book, go to the first chapter of the next book
+        final books = await DatabaseHelper.getBooks();
+        final currentBookIndex = books.indexWhere((book) => book.id == bookId);
+        if (currentBookIndex != -1 && currentBookIndex < books.length - 1) {
+          final nextBook = books[currentBookIndex + 1];
+          final nextBookChapters =
+              await DatabaseHelper.getChapters(nextBook.id);
+          if (nextBookChapters.isNotEmpty) {
+            await updateBookId(nextBook.id);
+            await updateChapterId(nextBookChapters.first.id);
+          }
+        }
+      }
+    }
+  }
+
+  Future<void> goToPreviousChapter() async {
+    final chapters = await DatabaseHelper.getChapters(bookId);
+    if (chapters.isNotEmpty) {
+      final currentIndex =
+          chapters.indexWhere((chapter) => chapter.id == chapterId);
+      if (currentIndex > 0) {
+        // Go to the previous chapter in the current book
+        final previousChapter = chapters[currentIndex - 1];
+        await updateChapterId(previousChapter.id);
+      } else if (currentIndex == 0) {
+        // If at the first chapter of the current book, go to the last chapter of the previous book
+        final books = await DatabaseHelper.getBooks();
+        final currentBookIndex = books.indexWhere((book) => book.id == bookId);
+        if (currentBookIndex > 0) {
+          final previousBook = books[currentBookIndex - 1];
+          final previousBookChapters =
+              await DatabaseHelper.getChapters(previousBook.id);
+          if (previousBookChapters.isNotEmpty) {
+            await updateBookId(previousBook.id);
+            await updateChapterId(previousBookChapters.last.id);
+          }
+        }
+      }
+    }
+  }
 }
