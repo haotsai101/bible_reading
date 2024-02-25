@@ -7,7 +7,6 @@ import 'package:bible_reading/services/file_parsing_service.dart';
 import 'package:bible_reading/services/reading_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class DownloadScreen extends StatefulWidget {
   final updateData;
@@ -32,14 +31,6 @@ class _DownloadScreenState extends State<DownloadScreen> {
             localBibles = bibles;
           }))
         });
-    _requestPermission();
-  }
-
-  Future<void> _requestPermission() async {
-    var status = await Permission.storage.request();
-    if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
   }
 
   void _downloadBible(Bible bible) async {
@@ -83,21 +74,27 @@ class _DownloadScreenState extends State<DownloadScreen> {
   }
 
   Future<void> _pickAndProcessFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
-      try {
-        File file = File(result.files.single.path!);
-        Bible bible = await parseAndSaveVerses(file.path);
-        await ReadingManager().addBibleId(bible.id);
-        widget.updateData();
-        Navigator.pop(
-            context); // Go back to the home screen after download completion
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to parse Bible: $e')),
-        );
+      if (result != null) {
+        try {
+          File file = File(result.files.single.path!);
+          Bible bible = await parseAndSaveVerses(file.path);
+          await ReadingManager().addBibleId(bible.id);
+          widget.updateData();
+          Navigator.pop(
+              context); // Go back to the home screen after download completion
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to parse Bible: $e')),
+          );
+        }
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Permission denied for accessing file picker.')),
+      );
     }
   }
 

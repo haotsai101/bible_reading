@@ -26,20 +26,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     fetchData();
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      fetchData(); // Refresh data when the app is brought to the foreground
-    }
-  }
-
   void fetchData() {
     futureVerses = ReadingManager().getVersesByChapter();
     futureVersions = ReadingManager().getBibles().then((bibles) {

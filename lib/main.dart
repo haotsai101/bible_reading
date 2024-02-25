@@ -7,8 +7,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 void main() async {
   // Initialize sqflite for desktop or tests.
   sqfliteFfiInit();
-  await dotenv.load(
-      fileName: ".env"); // Load environment variables from .env file
+  await dotenv.load(fileName: ".env");
   var readingManager = ReadingManager();
   await readingManager.initialize();
 
