@@ -57,12 +57,12 @@ jobs:
         run: flutter build ipa --release --no-codesign
 
       - name: Zip IPA build artifacts
-        run: cd build/ios && zip -r ../ios-ipa.zip ./*
+        run: cd build/ios && zip -r ../bible-ios-ipa.zip ./*
       - name: Upload iOS IPA to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: bible-ios-ipa.zip
-          path: build/ios-ipa.zip
+          path: build/bible-ios-ipa.zip
 
   build-android-bom:
     runs-on: ubuntu-latest
@@ -114,12 +114,12 @@ jobs:
         run: flutter build ipa --release --no-codesign
 
       - name: Zip IPA build artifacts
-        run: cd build/ios && zip -r ../ios-ipa.zip ./*
+        run: cd build/ios && zip -r ../bom-ios-ipa.zip ./*
       - name: Upload iOS IPA to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: bom-ios-ipa.zip
-          path: build/ios-ipa.zip
+          path: build/bom-ios-ipa.zip
 
   create-release:
     needs:
