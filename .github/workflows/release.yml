@@ -26,11 +26,13 @@ jobs:
         run: flutter pub get
       - name: Build APK
         run: flutter build apk --release
+      - name: Rename APK file
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/bible-app-release.apk
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: bible-app-release.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/bible-app-release.apk
 
   build-ios-bible:
     runs-on: macos-latest
@@ -81,11 +83,13 @@ jobs:
         run: flutter pub get
       - name: Build APK
         run: flutter build apk --release
+      - name: Rename APK file
+        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/bom-app-release.apk
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: bom-app-release.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/bom-app-release.apk
 
   build-ios-bom:
     runs-on: macos-latest
@@ -125,15 +129,25 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - name: Download APK Artifact
+      - name: Download Bible APK Artifact
         uses: actions/download-artifact@v2
         with:
           name: bible-app-release.apk
           path: build/android/
-      - name: Download iOS IPA Artifact
+      - name: Download Bible iOS IPA Artifact
         uses: actions/download-artifact@v2
         with:
           name: bible-ios-ipa.zip
+          path: build/ios/
+      - name: Download Book of Mormon APK Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: bom-app-release.apk
+          path: build/android/
+      - name: Download Book of Mormon iOS IPA Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: bom-ios-ipa.zip
           path: build/ios/
       - name: Create Release
         id: create_release
