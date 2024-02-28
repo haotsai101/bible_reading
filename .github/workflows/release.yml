@@ -4,16 +4,19 @@ on:
   push:
     branches:
       - main
+      - book_of_mormon
 
 jobs:
-  build-android:
+  build-android-bible:
     runs-on: ubuntu-latest
-    environment: Prod
+    environment: Bible
     steps:
       - uses: actions/checkout@v3
       - name: Create .env file
         run: |
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "DEFAULT_BOOKS_JSON=${{ secrets.DEFAULT_BOOKS_JSON }}" >> .env
+          echo "ENV=${{ secrets.ENV }}" >> .env
         shell: bash
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -26,17 +29,19 @@ jobs:
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: app-release.apk
+          name: bible-app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-  build-ios:
+  build-ios-bible:
     runs-on: macos-latest
-    environment: Prod
+    environment: Bible
     steps:
       - uses: actions/checkout@v3
       - name: Create .env file
         run: |
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "DEFAULT_BOOKS_JSON=${{ secrets.DEFAULT_BOOKS_JSON }}" >> .env
+          echo "ENV=${{ secrets.ENV }}" >> .env
         shell: bash
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -54,11 +59,67 @@ jobs:
       - name: Upload iOS IPA to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ios-ipa.zip
+          name: bible-ios-ipa.zip
+          path: build/ios-ipa.zip
+
+  build-android-bom:
+    runs-on: ubuntu-latest
+    environment: BookOfMormon
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create .env file
+        run: |
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "DEFAULT_BOOKS_JSON=${{ secrets.DEFAULT_BOOKS_JSON }}" >> .env
+          echo "ENV=${{ secrets.ENV }}" >> .env
+        shell: bash
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Build APK
+        run: flutter build apk --release
+      - name: Upload APK to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: bom-app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  build-ios-bom:
+    runs-on: macos-latest
+    environment: BookOfMormon
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create .env file
+        run: |
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "DEFAULT_BOOKS_JSON=${{ secrets.DEFAULT_BOOKS_JSON }}" >> .env
+          echo "ENV=${{ secrets.ENV }}" >> .env
+        shell: bash
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      - name: Install CocoaPods dependencies
+        run: cd ios && pod install
+      - name: Build iOS IPA
+        run: flutter build ipa --release --no-codesign
+
+      - name: Zip IPA build artifacts
+        run: cd build/ios && zip -r ../ios-ipa.zip ./*
+      - name: Upload iOS IPA to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: bom-ios-ipa.zip
           path: build/ios-ipa.zip
 
   create-release:
-    needs: [build-android, build-ios]
+    needs:
+      [build-android-bible, build-ios-bible, build-android-bom, build-ios-bom]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -67,12 +128,12 @@ jobs:
       - name: Download APK Artifact
         uses: actions/download-artifact@v2
         with:
-          name: app-release.apk
+          name: bible-app-release.apk
           path: build/android/
       - name: Download iOS IPA Artifact
         uses: actions/download-artifact@v2
         with:
-          name: ios-ipa.zip
+          name: bible-ios-ipa.zip
           path: build/ios/
       - name: Create Release
         id: create_release
@@ -84,21 +145,39 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-      - name: Upload APK Release Asset
+      - name: Upload Bible APK Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/android/app-release.apk
-          asset_name: app-release.apk
+          asset_path: build/android/bible-app-release.apk
+          asset_name: bible-app-release.apk
           asset_content_type: application/vnd.android.package-archive
-      - name: Upload iOS IPA Release Asset
+      - name: Upload Bible iOS IPA Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/ios/ios-ipa.zip
-          asset_name: ios-ipa.zip
+          asset_path: build/ios/bible-ios-ipa.zip
+          asset_name: bible-ios-ipa.zip
+          asset_content_type: application/zip
+      - name: Upload Book of Mormon APK Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/android/bom-app-release.apk
+          asset_name: bom-app-release.apk
+          asset_content_type: application/vnd.android.package-archive
+      - name: Upload Book of Mormon iOS IPA Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/ios/bom-ios-ipa.zip
+          asset_name: bom-ios-ipa.zip
           asset_content_type: application/zip
