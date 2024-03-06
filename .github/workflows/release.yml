@@ -25,7 +25,7 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
       - name: Build APK
-        run: flutter build apk --release --release --flavor bible
+        run: flutter build apk --release --flavor bible
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -50,7 +50,7 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
       - name: Build APK
-        run: flutter build apk --release --release --flavor bom
+        run: flutter build apk --release --flavor bom
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
