@@ -160,7 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.run_number }}
-          release_name: $RELEASE_TYPE ${{ github.run_number }}
+          release_name: ${{ RELEASE_TYPE }} ${{ github.run_number }}
           draft: false
           prerelease: ${{ github.ref != 'refs/heads/main' }}
       - name: Upload Bible APK Release Asset
