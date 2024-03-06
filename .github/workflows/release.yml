@@ -145,6 +145,14 @@ jobs:
         with:
           name: bom-ios-ipa.zip
           path: build/ios/
+      - name: Determine release type
+        id: release_type
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "RELEASE_TYPE=Major Release" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TYPE=Beta Release" >> $GITHUB_ENV
+          fi
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -152,9 +160,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
+          release_name: $RELEASE_TYPE ${{ github.run_number }}
           draft: false
-          prerelease: false
+          prerelease: ${{ github.ref != 'refs/heads/main' }}
       - name: Upload Bible APK Release Asset
         uses: actions/upload-release-asset@v1
         env:
