@@ -155,6 +155,8 @@ jobs:
           else
             echo "::set-output name=release_name::Beta Release ${{ github.run_number }}"
           fi
+      - name: Test release name
+        run: echo ${{ needs.create-release.outputs.release_name }}
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
