@@ -25,14 +25,12 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
       - name: Build APK
-        run: flutter build apk --release
-      - name: Rename APK file
-        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/bible-app-release.apk
+        run: flutter build apk --release --release --flavor bible
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: bible-app-release.apk
-          path: build/app/outputs/flutter-apk/bible-app-release.apk
+          name: app-bible-release.apk
+          path: build/app/outputs/apk/bible/release/app-bible-release.apk
 
   build-ios-bible:
     runs-on: macos-latest
@@ -82,14 +80,12 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
       - name: Build APK
-        run: flutter build apk --release
-      - name: Rename APK file
-        run: mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/bom-app-release.apk
+        run: flutter build apk --release --release --flavor bom
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: bom-app-release.apk
-          path: build/app/outputs/flutter-apk/bom-app-release.apk
+          name: app-bom-release.apk
+          path: build/app/outputs/apk/bom/release/app-bom-release.apk
 
   build-ios-bom:
     runs-on: macos-latest
@@ -132,7 +128,7 @@ jobs:
       - name: Download Bible APK Artifact
         uses: actions/download-artifact@v2
         with:
-          name: bible-app-release.apk
+          name: app-bible-release.apk
           path: build/android/
       - name: Download Bible iOS IPA Artifact
         uses: actions/download-artifact@v2
@@ -142,7 +138,7 @@ jobs:
       - name: Download Book of Mormon APK Artifact
         uses: actions/download-artifact@v2
         with:
-          name: bom-app-release.apk
+          name: app-bom-release.apk
           path: build/android/
       - name: Download Book of Mormon iOS IPA Artifact
         uses: actions/download-artifact@v2
@@ -165,8 +161,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/android/bible-app-release.apk
-          asset_name: bible-app-release.apk
+          asset_path: build/android/app-bible-release.apk
+          asset_name: app-bible-release.apk
           asset_content_type: application/vnd.android.package-archive
       - name: Upload Bible iOS IPA Release Asset
         uses: actions/upload-release-asset@v1
@@ -183,8 +179,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/android/bom-app-release.apk
-          asset_name: bom-app-release.apk
+          asset_path: build/android/app-bom-release.apk
+          asset_name: app-bom-release.apk
           asset_content_type: application/vnd.android.package-archive
       - name: Upload Book of Mormon iOS IPA Release Asset
         uses: actions/upload-release-asset@v1
