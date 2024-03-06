@@ -34,7 +34,7 @@ Future<Bible> parseAndSaveVerses(String filePath) async {
 
   for (String line in lines) {
     if (line.isNotEmpty) {
-      final RegExp pattern = RegExp(r'^(\D+)(\d+):(\d+)\s+(.*)');
+      final RegExp pattern = RegExp(r'^(\D+)(\d+):(\d+[a-zA-Z]*)\s+(.*)');
       final match = pattern.firstMatch(line);
 
       if (match == null) {

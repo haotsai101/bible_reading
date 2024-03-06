@@ -209,9 +209,13 @@ class DatabaseHelper {
         bookId,
         chapterId
       ], // Spreading bibleIds into whereArgs
-      orderBy:
-          'CAST(number AS INTEGER), bibleId', // Order by number as integer and then by bibleId
+      // Splitting the 'number' column into numeric and char parts for sorting
+      orderBy: """
+      CAST(substr(number, 1, CASE WHEN instr(number, ' ') = 0 THEN length(number) ELSE instr(number, ' ') - 1 END) AS INTEGER), 
+      substr(number, CASE WHEN instr(number, ' ') = 0 THEN length(number)+1 ELSE instr(number, ' ') + 1 END)
+    """,
     );
+
     return List.generate(maps.length, (i) => Verse.fromMap(maps[i]));
   }
 

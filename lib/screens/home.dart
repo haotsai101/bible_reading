@@ -85,9 +85,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     } else {
                       await ReadingManager().addBibleId(version.id);
                     }
-                    setState(() {
-                      _fetchData();
-                    });
+                    _fetchData();
                   },
                   itemBuilder: (BuildContext context) {
                     return snapshot.data!.map((Bible version) {
@@ -172,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     Verse verse = snapshot.data![index];
                     return ListTile(
                       title: Text('${verse.number} ${verse.content}'),
-                      subtitle: biblesMap.length > 1
+                      subtitle: ReadingManager().currentBibleIds.length > 1
                           ? Text(
                               'Bible: ${biblesMap[verse.bibleId]?.abbreviation ?? 'Unknown'}')
                           : null, // Conditional display based on the number of items in biblesMap
