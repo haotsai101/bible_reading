@@ -6,9 +6,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
+  sqfliteFfiInit();
   await dotenv.load(fileName: ".env");
   await DatabaseHelper.loadDefaultBooks();
-  sqfliteFfiInit();
   var readingManager = ReadingManager();
   await readingManager.initialize();
 
