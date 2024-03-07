@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-bible-release.apk
-          path: build/app/outputs/apk/flutter-apk/app-bible-release.apk
+          path: build/app/outputs/flutter-apk/app-bible-release.apk
 
   build-android-bom:
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-bom-release.apk
-          path: build/app/outputs/apk/flutter-apk/app-bom-release.apk
+          path: build/app/outputs/flutter-apk/app-bom-release.apk
 
   create-release:
     needs: [build-android-bible, build-android-bom]
