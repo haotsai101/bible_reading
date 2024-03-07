@@ -8,7 +8,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 void main() async {
   sqfliteFfiInit();
   await dotenv.load(fileName: ".env");
-  // await DatabaseHelper.loadDefaultBooks();
+  await DatabaseHelper.loadDefaultBooks();
   // var readingManager = ReadingManager();
   // await readingManager.initialize();
 
