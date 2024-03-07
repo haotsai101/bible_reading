@@ -14,48 +14,14 @@ class DatabaseHelper {
     String defaultBooksJson = dotenv.env['DEFAULT_BOOKS_JSON']!;
     defaultBooks =
         List<Map<String, dynamic>>.from(json.decode(defaultBooksJson));
-    final db = await getDatabase();
-    await db.transaction((txn) async {
-      // Insert the default Bible
-      await txn.insert('Bibles', {
-        'id': defaultBibleId,
-        'name': 'Default Bible',
-        'description': 'This is the default Bible.',
-        'abbreviation': 'DefBib',
-        'language': 'English',
-      });
-
-      // Insert default books and chapters
-      for (Map<String, dynamic> bookInfo in defaultBooks) {
-        String bookId = bookInfo['id'];
-        await txn.insert('Books', {
-          'id': bookId,
-          'bibleId': defaultBibleId,
-          'abbreviation': bookId,
-          'name': bookInfo['name'],
-          'nameLong': bookInfo['name'] + " Long Name",
-        });
-
-        int chapterCount = bookInfo['chapters'];
-        for (int i = 1; i <= chapterCount; i++) {
-          await txn.insert('Chapters', {
-            'id': '$bookId.$i',
-            'bibleId': defaultBibleId,
-            'bookId': bookId,
-            'number': i.toString(),
-            'reference': '${bookInfo['name']} $i',
-          });
-        }
-      }
-    });
   }
 
   static String defaultBibleId = 'defaultBibleId';
 
   static Future<Database> getDatabase() async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'bible.db');
-    await deleteDatabase(path);
+    // final path = join(dbPath, 'bible.db');
+    // await deleteDatabase(path);
 
     return openDatabase(
       join(dbPath, 'bible.db'),
@@ -76,6 +42,40 @@ class DatabaseHelper {
         await db.execute(
           'CREATE TABLE Verses(id TEXT PRIMARY KEY, bibleId TEXT, bookId TEXT, chapterId TEXT, number TEXT, content TEXT, highlighted INTEGER, marked INTEGER, FOREIGN KEY(bibleId) REFERENCES Bibles(id), FOREIGN KEY(bookId) REFERENCES Books(id), FOREIGN KEY(chapterId) REFERENCES Chapters(id))',
         );
+
+        await db.transaction((txn) async {
+          // Insert the default Bible
+          await txn.insert('Bibles', {
+            'id': defaultBibleId,
+            'name': 'Default Bible',
+            'description': 'This is the default Bible.',
+            'abbreviation': 'DefBib',
+            'language': 'English',
+          });
+
+          // Insert default books and chapters
+          for (Map<String, dynamic> bookInfo in defaultBooks) {
+            String bookId = bookInfo['id'];
+            await txn.insert('Books', {
+              'id': bookId,
+              'bibleId': defaultBibleId,
+              'abbreviation': bookId,
+              'name': bookInfo['name'],
+              'nameLong': bookInfo['name'] + " Long Name",
+            });
+
+            int chapterCount = bookInfo['chapters'];
+            for (int i = 1; i <= chapterCount; i++) {
+              await txn.insert('Chapters', {
+                'id': '$bookId.$i',
+                'bibleId': defaultBibleId,
+                'bookId': bookId,
+                'number': i.toString(),
+                'reference': '${bookInfo['name']} $i',
+              });
+            }
+          }
+        });
       },
       version: 1,
     );
