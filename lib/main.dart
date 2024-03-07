@@ -10,8 +10,8 @@ void main() async {
   sqfliteFfiInit();
   // await dotenv.load(fileName: ".env");
   // DatabaseHelper.loadDefaultBooks();
-  var readingManager = ReadingManager();
-  await readingManager.initialize();
+  // var readingManager = ReadingManager();
+  // await readingManager.initialize();
 
   runApp(const MyApp());
 }
