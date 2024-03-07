@@ -7,11 +7,11 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   // Initialize sqflite for desktop or tests.
-  sqfliteFfiInit();
-  await dotenv.load(fileName: ".env");
-  DatabaseHelper.loadDefaultBooks();
-  var readingManager = ReadingManager();
-  await readingManager.initialize();
+  // sqfliteFfiInit();
+  // await dotenv.load(fileName: ".env");
+  // DatabaseHelper.loadDefaultBooks();
+  // var readingManager = ReadingManager();
+  // await readingManager.initialize();
 
   runApp(const MyApp());
 }
