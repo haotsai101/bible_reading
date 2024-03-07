@@ -10,7 +10,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static late List<Map<String, dynamic>> defaultBooks;
-  static void loadDefaultBooks() {
+  static Future<void> loadDefaultBooks() async {
     String defaultBooksJson = dotenv.env['DEFAULT_BOOKS_JSON']!;
     defaultBooks =
         List<Map<String, dynamic>>.from(json.decode(defaultBooksJson));
@@ -20,8 +20,8 @@ class DatabaseHelper {
 
   static Future<Database> getDatabase() async {
     final dbPath = await getDatabasesPath();
-    // final path = join(dbPath, 'bible.db');
-    // await deleteDatabase(path);
+    final path = join(dbPath, 'bible.db');
+    await deleteDatabase(path);
 
     return openDatabase(
       join(dbPath, 'bible.db'),
