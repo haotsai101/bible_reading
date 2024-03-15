@@ -1,4 +1,3 @@
-import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/screens/home.dart';
 import 'package:bible_reading/services/reading_manager.dart';
 import 'package:flutter/material.dart';
