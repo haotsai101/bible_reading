@@ -9,11 +9,15 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static late List<Map<String, dynamic>> defaultBooks;
-  static Future<void> loadDefaultBooks() async {
-    String defaultBooksJson = dotenv.env['DEFAULT_BOOKS_JSON']!;
-    defaultBooks =
-        List<Map<String, dynamic>>.from(json.decode(defaultBooksJson));
+  static List<Map<String, dynamic>> defaultBooks = [];
+
+  static List<Map<String, dynamic>> getDefaultBooks() {
+    if (defaultBooks.isEmpty) {
+      String defaultBooksJson = dotenv.env['DEFAULT_BOOKS_JSON']!;
+      defaultBooks =
+          List<Map<String, dynamic>>.from(json.decode(defaultBooksJson));
+    }
+    return defaultBooks;
   }
 
   static String defaultBibleId = 'defaultBibleId';
@@ -54,7 +58,7 @@ class DatabaseHelper {
           });
 
           // Insert default books and chapters
-          for (Map<String, dynamic> bookInfo in defaultBooks) {
+          for (Map<String, dynamic> bookInfo in getDefaultBooks()) {
             String bookId = bookInfo['id'];
             await txn.insert('Books', {
               'id': bookId,
