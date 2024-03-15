@@ -28,6 +28,21 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    flavorDimensions "default"
+    
+    productFlavors {
+        bible {
+            dimension "default"
+            applicationIdSuffix ".bible"
+            versionNameSuffix "-bible"
+        }
+
+        bom {
+            dimension "default"
+            applicationIdSuffix ".bom"
+            versionNameSuffix "-bom"
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
