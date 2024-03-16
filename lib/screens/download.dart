@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
 import 'package:bible_reading/services/bible_service.dart';
@@ -6,7 +7,6 @@ import 'package:bible_reading/services/file_parsing_service.dart';
 import 'package:bible_reading/services/reading_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class DownloadScreen extends StatefulWidget {
   final updateData;
@@ -25,13 +25,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
   @override
   void initState() {
     super.initState();
-    String env = dotenv.env['ENV']!;
-    if (env == 'Bible') {
-      futureBibleGroups = bibleService.fetchBibles();
-    } else {
-      futureBibleGroups = Future.value([]);
-    }
-
+    futureBibleGroups = bibleService.fetchBibles();
     DatabaseHelper.getBibles().then((bibles) => {
           setState((() {
             localBibles = bibles;
@@ -134,8 +128,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
             child: FutureBuilder<List<BibleGroup>>(
               future: futureBibleGroups,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.data!.isNotEmpty) {
+                if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasError) {
                     return Center(child: Text("Error: ${snapshot.error}"));
                   }
@@ -166,11 +159,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                     },
                   );
                 } else {
-                  return const Center(
-                      child: Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Text(
-                              'No API available. Please add the file you want to parse.')));
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             ),

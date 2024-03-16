@@ -50,7 +50,7 @@ Future<Bible> parseAndSaveVerses(String filePath) async {
         if (curBookAbbr == '' || curBookAbbr != bookAbbr) {
           curBookAbbr = bookAbbr;
           c += 1;
-          Map<String, dynamic> bookInfo = DatabaseHelper.getDefaultBooks()[c];
+          Map<String, dynamic> bookInfo = DatabaseHelper.defaultBooks[c];
           String bookId = bookInfo['id'];
           Book book = Book(
             id: bookId,
@@ -68,7 +68,7 @@ Future<Bible> parseAndSaveVerses(String filePath) async {
       try {
         if (cc == '' || cc != chapterNumber) {
           cc = chapterNumber;
-          Map<String, dynamic> bookInfo = DatabaseHelper.getDefaultBooks()[c];
+          Map<String, dynamic> bookInfo = DatabaseHelper.defaultBooks[c];
           String bookId = bookInfo['id'];
           String chapterId = '$bookId.$chapterNumber';
           Chapter chapter = Chapter(
@@ -84,7 +84,7 @@ Future<Bible> parseAndSaveVerses(String filePath) async {
       }
 
       try {
-        Map<String, dynamic> bookInfo = DatabaseHelper.getDefaultBooks()[c];
+        Map<String, dynamic> bookInfo = DatabaseHelper.defaultBooks[c];
 
         Verse verse = Verse(
           id: '${bookInfo['id']}-$chapterNumber-$verseNum',
