@@ -11,13 +11,6 @@
 		20C157BE6B7F88EA68AA1846 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC89E17316266690C3703ED /* Pods_Runner.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		466F539C2B8FA2EC0080EC82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		466F539D2B8FA2EC0080EC82 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		466F539F2B8FA2EC0080EC82 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FC89E17316266690C3703ED /* Pods_Runner.framework */; };
-		466F53A12B8FA2EC0080EC82 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		466F53A22B8FA2EC0080EC82 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		466F53A32B8FA2EC0080EC82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
-		466F53A42B8FA2EC0080EC82 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -36,16 +29,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		466F53A52B8FA2EC0080EC82 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -66,15 +49,6 @@
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		466F536D2B8F9FA90080EC82 /* bible_reading_bomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bible_reading_bomApp.swift; sourceTree = "<group>"; };
-		466F536F2B8F9FA90080EC82 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		466F53712B8F9FAA0080EC82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		466F53742B8F9FAA0080EC82 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		466F537E2B8F9FAB0080EC82 /* bible_reading_bomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bible_reading_bomTests.swift; sourceTree = "<group>"; };
-		466F53882B8F9FAB0080EC82 /* bible_reading_bomUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bible_reading_bomUITests.swift; sourceTree = "<group>"; };
-		466F538A2B8F9FAB0080EC82 /* bible_reading_bomUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bible_reading_bomUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		466F53AC2B8FA2EC0080EC82 /* Runner-bom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Runner-bom.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		466F53AD2B8FA2EC0080EC82 /* Runner copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Runner copy-Info.plist"; path = "/Users/zhihao/personal_projects/bible-reading/bible_reading/ios/Runner copy-Info.plist"; sourceTree = "<absolute>"; };
 		640B099F46CD7C43F984776E /* Pods-RunnerTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.profile.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.profile.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -99,14 +73,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC06A13774977747445F8B25 /* Pods_RunnerTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		466F539E2B8FA2EC0080EC82 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				466F539F2B8FA2EC0080EC82 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,42 +104,6 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
-		466F536C2B8F9FA90080EC82 /* bible-reading-bom */ = {
-			isa = PBXGroup;
-			children = (
-				466F536D2B8F9FA90080EC82 /* bible_reading_bomApp.swift */,
-				466F536F2B8F9FA90080EC82 /* ContentView.swift */,
-				466F53712B8F9FAA0080EC82 /* Assets.xcassets */,
-				466F53732B8F9FAA0080EC82 /* Preview Content */,
-			);
-			path = "bible-reading-bom";
-			sourceTree = "<group>";
-		};
-		466F53732B8F9FAA0080EC82 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				466F53742B8F9FAA0080EC82 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		466F537D2B8F9FAB0080EC82 /* bible-reading-bomTests */ = {
-			isa = PBXGroup;
-			children = (
-				466F537E2B8F9FAB0080EC82 /* bible_reading_bomTests.swift */,
-			);
-			path = "bible-reading-bomTests";
-			sourceTree = "<group>";
-		};
-		466F53872B8F9FAB0080EC82 /* bible-reading-bomUITests */ = {
-			isa = PBXGroup;
-			children = (
-				466F53882B8F9FAB0080EC82 /* bible_reading_bomUITests.swift */,
-				466F538A2B8F9FAB0080EC82 /* bible_reading_bomUITestsLaunchTests.swift */,
-			);
-			path = "bible-reading-bomUITests";
-			sourceTree = "<group>";
-		};
 		8DF6288BC797EAED1C6BC3BE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +114,7 @@
 				A86A1687F621F2DEA5B6C2A0 /* Pods-RunnerTests.release.xcconfig */,
 				640B099F46CD7C43F984776E /* Pods-RunnerTests.profile.xcconfig */,
 			);
+			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -203,14 +134,10 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
-				466F536C2B8F9FA90080EC82 /* bible-reading-bom */,
-				466F537D2B8F9FAB0080EC82 /* bible-reading-bomTests */,
-				466F53872B8F9FAB0080EC82 /* bible-reading-bomUITests */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				8DF6288BC797EAED1C6BC3BE /* Pods */,
 				157263BD27D1FCC2146E5389 /* Frameworks */,
-				466F53AD2B8FA2EC0080EC82 /* Runner copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,7 +146,6 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
-				466F53AC2B8FA2EC0080EC82 /* Runner-bom.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,28 +187,6 @@
 			productReference = 331C8081294A63A400263BE5 /* RunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		466F53982B8FA2EC0080EC82 /* Runner-bom */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 466F53A82B8FA2EC0080EC82 /* Build configuration list for PBXNativeTarget "Runner-bom" */;
-			buildPhases = (
-				466F53992B8FA2EC0080EC82 /* [CP] Check Pods Manifest.lock */,
-				466F539A2B8FA2EC0080EC82 /* Run Script */,
-				466F539B2B8FA2EC0080EC82 /* Sources */,
-				466F539E2B8FA2EC0080EC82 /* Frameworks */,
-				466F53A02B8FA2EC0080EC82 /* Resources */,
-				466F53A52B8FA2EC0080EC82 /* Embed Frameworks */,
-				466F53A62B8FA2EC0080EC82 /* Thin Binary */,
-				466F53A72B8FA2EC0080EC82 /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Runner-bom";
-			productName = Runner;
-			productReference = 466F53AC2B8FA2EC0080EC82 /* Runner-bom.app */;
-			productType = "com.apple.product-type.application";
-		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
@@ -312,7 +216,6 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
@@ -341,7 +244,6 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
-				466F53982B8FA2EC0080EC82 /* Runner-bom */,
 			);
 		};
 /* End PBXProject section */
@@ -351,17 +253,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		466F53A02B8FA2EC0080EC82 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				466F53A12B8FA2EC0080EC82 /* LaunchScreen.storyboard in Resources */,
-				466F53A22B8FA2EC0080EC82 /* AppFrameworkInfo.plist in Resources */,
-				466F53A32B8FA2EC0080EC82 /* Assets.xcassets in Resources */,
-				466F53A42B8FA2EC0080EC82 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,76 +302,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
-		};
-		466F53992B8FA2EC0080EC82 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		466F539A2B8FA2EC0080EC82 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
-		};
-		466F53A62B8FA2EC0080EC82 /* Thin Binary */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}",
-			);
-			name = "Thin Binary";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
-		};
-		466F53A72B8FA2EC0080EC82 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		535138B0B0B9FF326FB360FD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -549,15 +370,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		466F539B2B8FA2EC0080EC82 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				466F539C2B8FA2EC0080EC82 /* AppDelegate.swift in Sources */,
-				466F539D2B8FA2EC0080EC82 /* GeneratedPluginRegistrant.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,73 +534,6 @@
 			};
 			name = Profile;
 		};
-		466F53A92B8FA2EC0080EC82 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = 5H964M87S4;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "Runner copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.bibleReading-bom";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
-		};
-		466F53AA2B8FA2EC0080EC82 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = 5H964M87S4;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "Runner copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.bibleReading-bom";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		466F53AB2B8FA2EC0080EC82 /* Profile */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = 5H964M87S4;
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "Runner copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.bibleReading-bom";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Profile;
-		};
 		97C147031CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -950,16 +695,6 @@
 				331C8088294A63A400263BE5 /* Debug */,
 				331C8089294A63A400263BE5 /* Release */,
 				331C808A294A63A400263BE5 /* Profile */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		466F53A82B8FA2EC0080EC82 /* Build configuration list for PBXNativeTarget "Runner-bom" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				466F53A92B8FA2EC0080EC82 /* Debug */,
-				466F53AA2B8FA2EC0080EC82 /* Release */,
-				466F53AB2B8FA2EC0080EC82 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

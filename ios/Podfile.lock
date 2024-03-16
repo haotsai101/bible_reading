@@ -34,6 +34,8 @@ PODS:
     - DKImagePickerController/PhotoGallery
     - Flutter
   - Flutter (1.0.0)
+  - "permission_handler (5.1.0+2)":
+    - Flutter
   - SDWebImage (5.18.11):
     - SDWebImage/Core (= 5.18.11)
   - SDWebImage/Core (5.18.11)
@@ -48,6 +50,7 @@ PODS:
 DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/darwin`)
 
@@ -63,6 +66,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: Flutter
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite:
@@ -71,8 +76,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
+  file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   SDWebImage: a3ba0b8faac7228c3c8eadd1a55c9c9fe5e16457
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
