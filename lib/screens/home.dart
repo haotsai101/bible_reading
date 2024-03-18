@@ -1,9 +1,11 @@
+import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/models/bible.dart';
 import 'package:bible_reading/models/verse.dart';
 import 'package:bible_reading/screens/download.dart';
 import 'package:bible_reading/services/reading_manager.dart';
 import 'package:bible_reading/widgets/custom_drawer_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -19,6 +21,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   late Future<List<Bible>> futureVersions = Future.value([]);
   Map<String, Bible> biblesMap = {}; // Map to hold Bible ID to Bible object
   String title = 'Bible';
+
+  late Offset _tapPosition;
 
   @override
   initState() {
@@ -168,12 +172,96 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     Verse verse = snapshot.data![index];
-                    return ListTile(
-                      title: Text('${verse.number} ${verse.content}'),
-                      subtitle: ReadingManager().currentBibleIds.length > 1
-                          ? Text(
-                              'Bible: ${biblesMap[verse.bibleId]?.abbreviation ?? 'Unknown'}')
-                          : null, // Conditional display based on the number of items in biblesMap
+                    Color? bgColor = verse.highlighted
+                        ? Colors.yellow
+                        : null; // Highlighted verses have yellow background
+                    TextStyle textStyle = TextStyle(
+                      backgroundColor:
+                          bgColor, // Apply background color directly to text for highlighting
+                    );
+
+                    IconData? leadingIcon = verse.marked
+                        ? Icons.bookmark
+                        : null; // Marked verses show a bookmark icon
+
+                    return GestureDetector(
+                      onTapDown: (TapDownDetails details) {
+                        _tapPosition = details.globalPosition;
+                      },
+                      child: ListTile(
+                        leading: verse.marked
+                            ? GestureDetector(
+                                onTap: () async {
+                                  // Implement logic to unmark the verse
+                                  await DatabaseHelper.markUnmarkVerse(verse.id,
+                                      false); // Assuming you have this method in your DatabaseHelper
+                                  _fetchData();
+                                },
+                                child: Icon(Icons.bookmark, color: Colors.blue),
+                              )
+                            : null,
+                        title: Text('${verse.number} ${verse.content}',
+                            style: textStyle),
+                        subtitle: ReadingManager().currentBibleIds.length > 1
+                            ? Text(
+                                'Bible: ${biblesMap[verse.bibleId]?.abbreviation ?? 'Unknown'}')
+                            : null, // Conditional display based on the number of items in biblesMap
+                        onLongPress: () async {
+                          final RenderBox overlay = Overlay.of(context)
+                              .context
+                              .findRenderObject() as RenderBox;
+
+                          final selectedItem = await showMenu(
+                            context: context,
+                            position: RelativeRect.fromRect(
+                                _tapPosition &
+                                    const Size(
+                                        40, 40), // smaller rect, the touch area
+                                Offset.zero &
+                                    overlay
+                                        .size // Bigger rect, the entire screen
+                                ),
+                            items: [
+                              const PopupMenuItem(
+                                value: 'copy',
+                                child: Text('Copy'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'highlight',
+                                child: Text('Highlight'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'mark',
+                                child: Text('Mark'),
+                              ),
+                            ],
+                          );
+
+                          // Handle the action based on the selected item
+                          switch (selectedItem) {
+                            case 'copy':
+                              // Copy verse to clipboard
+                              Clipboard.setData(ClipboardData(
+                                  text: '${verse.number} ${verse.content}'));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Copied to clipboard')));
+                              break;
+                            case 'highlight':
+                              // Call DatabaseHelper to toggle highlight status
+                              await DatabaseHelper.highlightUnhighlightVerse(
+                                  verse.id, !verse.highlighted);
+                              _fetchData(); // Refresh data
+                              break;
+                            case 'mark':
+                              // Call DatabaseHelper to toggle mark status
+                              await DatabaseHelper.markUnmarkVerse(
+                                  verse.id, !verse.marked);
+                              _fetchData(); // Refresh data
+                              break;
+                          }
+                        },
+                      ),
                     );
                   },
                 );

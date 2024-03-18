@@ -90,7 +90,7 @@ class BibleService {
 
       // Convert the JSON data to a Verse model object
       Verse verse = Verse.fromJson(data);
-      List<Verse> verses = parseVerses(verse, chapterId);
+      List<Verse> verses = parseVerses(verse, chapterId, bibleId);
       return verses;
     } else {
       throw Exception(
@@ -108,7 +108,7 @@ class BibleService {
     });
   }
 
-  List<Verse> parseVerses(Verse parent, String chapterId) {
+  List<Verse> parseVerses(Verse parent, String chapterId, String bibleId) {
     List<Verse> verses = [];
     RegExp regExp = RegExp(r'\[\d+\]'); // Matches [Verse Number]
 
@@ -129,6 +129,7 @@ class BibleService {
         String verseText = part.trim();
         if (verseText.isNotEmpty) {
           verses.add(Verse(
+              id: '$bibleId-$chapterId-$currentVerseNumber',
               number: currentVerseNumber,
               content: verseText,
               chapterId: chapterId,

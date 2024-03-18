@@ -362,4 +362,27 @@ class DatabaseHelper {
     final data = await db.rawQuery('SELECT COUNT(*) FROM Verses');
     return Sqflite.firstIntValue(data) ?? 0; // Returns 0 if null
   }
+
+  // Function to mark or unmark a verse
+  static Future<void> markUnmarkVerse(String verseId, bool mark) async {
+    final db = await getDatabase();
+    await db.update(
+      'Verses',
+      {'marked': mark ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [verseId],
+    );
+  }
+
+  // Function to highlight or unhighlight a verse
+  static Future<void> highlightUnhighlightVerse(
+      String verseId, bool highlight) async {
+    final db = await getDatabase();
+    await db.update(
+      'Verses',
+      {'highlighted': highlight ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [verseId],
+    );
+  }
 }
