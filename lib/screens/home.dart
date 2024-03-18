@@ -180,10 +180,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                           bgColor, // Apply background color directly to text for highlighting
                     );
 
-                    IconData? leadingIcon = verse.marked
-                        ? Icons.bookmark
-                        : null; // Marked verses show a bookmark icon
-
                     return GestureDetector(
                       onTapDown: (TapDownDetails details) {
                         _tapPosition = details.globalPosition;

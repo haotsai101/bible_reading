@@ -385,4 +385,37 @@ class DatabaseHelper {
       whereArgs: [verseId],
     );
   }
+
+  static Future<void> deleteBible(String bibleId) async {
+    final db = await getDatabase();
+    await db.transaction((txn) async {
+      // First, delete all verses related to this Bible
+      await txn.delete(
+        'Verses',
+        where: 'bibleId = ?',
+        whereArgs: [bibleId],
+      );
+
+      // Next, delete all chapters related to this Bible
+      await txn.delete(
+        'Chapters',
+        where: 'bibleId = ?',
+        whereArgs: [bibleId],
+      );
+
+      // Then, delete all books related to this Bible
+      await txn.delete(
+        'Books',
+        where: 'bibleId = ?',
+        whereArgs: [bibleId],
+      );
+
+      // Finally, delete the Bible itself
+      await txn.delete(
+        'Bibles',
+        where: 'id = ?',
+        whereArgs: [bibleId],
+      );
+    });
+  }
 }
