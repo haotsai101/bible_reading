@@ -87,7 +87,7 @@ Future<Bible> parseAndSaveVerses(String filePath) async {
         Map<String, dynamic> bookInfo = DatabaseHelper.defaultBooks[c];
 
         Verse verse = Verse(
-          id: '${bookInfo['id']}-$chapterNumber-$verseNum',
+          id: '$bibleId-${bookInfo['id']}.$chapterNumber-$verseNum',
           bibleId: bibleId,
           bookId: bookInfo['id'],
           chapterId: '${bookInfo['id']}.$chapterNumber',

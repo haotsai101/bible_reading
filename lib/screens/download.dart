@@ -73,6 +73,63 @@ class _DownloadScreenState extends State<DownloadScreen> {
     }
   }
 
+  void _deleteBible(String bibleId) async {
+    // Show confirmation dialog before deletion
+    bool confirmDelete = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirm Delete'),
+              content:
+                  const Text('Are you sure you want to delete this Bible?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Delete'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+
+    if (confirmDelete) {
+      await DatabaseHelper.deleteBible(bibleId);
+      await ReadingManager().removeBibleId(bibleId);
+      widget
+          .updateData(); // Assuming this method updates the localBibles list and refreshes the UI
+      DatabaseHelper.getBibles().then((bibles) => {
+            setState((() {
+              localBibles = bibles;
+            }))
+          });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Bible deleted successfully')),
+      );
+    }
+  }
+
+// Modify ListTile for downloaded bibles to include a GestureDetector or InkWell for long press
+  Widget _downloadedBibleTile(Bible bible) {
+    return InkWell(
+      onLongPress: () => _deleteBible(bible.id),
+      child: ListTile(
+        title: Text(bible.name),
+        trailing: const Icon(Icons.check, color: Colors.green),
+        tileColor: Colors.grey[200],
+      ),
+    );
+  }
+
   Future<void> _pickAndProcessFile() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -115,11 +172,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               children: localBibles
-                  .map((bible) => ListTile(
-                        title: Text(bible.name),
-                        trailing: const Icon(Icons.check, color: Colors.green),
-                        tileColor: Colors.grey[200],
-                      ))
+                  .map((bible) => _downloadedBibleTile(bible))
                   .toList(),
             ),
           ),

@@ -1,5 +1,5 @@
 class Verse {
-  final String? id;
+  final String id;
   final String bibleId;
   final String bookId;
   final String? chapterId; // Make sure to add chapterId in your Verse model
@@ -9,7 +9,7 @@ class Verse {
   bool marked;
 
   Verse({
-    this.id,
+    required this.id,
     required this.bibleId,
     required this.bookId,
     this.chapterId,

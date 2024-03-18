@@ -362,4 +362,60 @@ class DatabaseHelper {
     final data = await db.rawQuery('SELECT COUNT(*) FROM Verses');
     return Sqflite.firstIntValue(data) ?? 0; // Returns 0 if null
   }
+
+  // Function to mark or unmark a verse
+  static Future<void> markUnmarkVerse(String verseId, bool mark) async {
+    final db = await getDatabase();
+    await db.update(
+      'Verses',
+      {'marked': mark ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [verseId],
+    );
+  }
+
+  // Function to highlight or unhighlight a verse
+  static Future<void> highlightUnhighlightVerse(
+      String verseId, bool highlight) async {
+    final db = await getDatabase();
+    await db.update(
+      'Verses',
+      {'highlighted': highlight ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [verseId],
+    );
+  }
+
+  static Future<void> deleteBible(String bibleId) async {
+    final db = await getDatabase();
+    await db.transaction((txn) async {
+      // First, delete all verses related to this Bible
+      await txn.delete(
+        'Verses',
+        where: 'bibleId = ?',
+        whereArgs: [bibleId],
+      );
+
+      // Next, delete all chapters related to this Bible
+      await txn.delete(
+        'Chapters',
+        where: 'bibleId = ?',
+        whereArgs: [bibleId],
+      );
+
+      // Then, delete all books related to this Bible
+      await txn.delete(
+        'Books',
+        where: 'bibleId = ?',
+        whereArgs: [bibleId],
+      );
+
+      // Finally, delete the Bible itself
+      await txn.delete(
+        'Bibles',
+        where: 'id = ?',
+        whereArgs: [bibleId],
+      );
+    });
+  }
 }
