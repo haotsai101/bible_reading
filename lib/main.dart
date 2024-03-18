@@ -1,3 +1,4 @@
+import 'package:bible_reading/db/database_helper.dart';
 import 'package:bible_reading/screens/home.dart';
 import 'package:bible_reading/services/reading_manager.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 void main() async {
   sqfliteFfiInit();
   await dotenv.load(fileName: ".env");
-  var readingManager = ReadingManager();
-  await readingManager.initialize();
+  // var readingManager = ReadingManager();
+  // await readingManager.initialize();
 
   runApp(const MyApp());
 }
@@ -33,8 +34,8 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: const Scaffold(
-          body: Text('testing'),
+        home: Scaffold(
+          body: Text(DatabaseHelper.getDefaultBooks().toString()),
         )
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         );
