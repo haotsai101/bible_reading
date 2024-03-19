@@ -35,9 +35,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
-          body: Text(DatabaseHelper.defaultBooks.length.toString() +
-              '    ' +
-              DatabaseHelper.getDefaultBooks().length.toString()),
+          body: Text(DatabaseHelper.defaultBooks.length.toString()),
         )
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         );
